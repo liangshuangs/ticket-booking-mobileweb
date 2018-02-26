@@ -1,0 +1,63 @@
+$height: 48PX;
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $height;
+  padding: 0 $height;
+  color: #373737;
+  background-color: #f5f7f6;
+  .title {
+    display: block;
+    height: $height;
+    line-height: $height;
+    text-align: center;
+    font-size: 16PX;
+  }
+  .icon {
+    position: absolute;
+    top: 0;
+    width: $height;
+    height: $height;
+    line-height: $height;
+    text-align: center;
+  }
+  .left {
+    left: 0;
+    color: #999;
+  }
+  .right {
+    right: 0;
+    color: #ff8928;
+  }
+}
+
+.ios {
+  $height: 44PX;
+  .header  {
+    height: 66PX;
+    padding: 22PX $height 0;
+    .title {
+      height: $height;
+      line-height: $height;
+    }
+    .icon {
+      top: 22PX;
+      width: $height;
+      height: $height;
+      line-height: $height;
+    }
+  }
+}
+
+.ios.iosx {
+  .header {
+    height: 88PX;
+    padding: 44PX 44PX 0;
+  }
+  .icon {
+    top: 44PX;
+  }
+}

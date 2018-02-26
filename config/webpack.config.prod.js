@@ -1,6 +1,7 @@
 'use strict';
 
 const autoprefixer = require('autoprefixer');
+const pxtorem = require('postcss-pxtorem');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -10,8 +11,9 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const paths = require('./paths');
+const pkg = require('../package.json');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -56,7 +58,15 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: ["whatwg-fetch", "babel-polyfill", paths.appIndexJs],
+  //externals: {
+    //'react': 'React',
+    //'react-dom': 'ReactDOM',
+    //'redux': 'Redux',
+    //'react-redux': 'ReactRedux',
+    //'redux-thunk': 'ReduxThunk',
+    //'react-router-dom': 'ReactRouterDOM',
+  //},
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -139,7 +149,7 @@ module.exports = {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             loader: require.resolve('url-loader'),
             options: {
-              limit: 10000,
+              limit: 30000,
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
@@ -166,7 +176,7 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.css$/,
+            test: /\.(css|scss)$/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -202,9 +212,21 @@ module.exports = {
                             ],
                             flexbox: 'no-2009',
                           }),
+                          pxtorem({
+                            rootValue: pkg.design.width / (320/12),
+                            unitPrecision: 5,
+                            propList: ['*'],
+                            selectorBlackList: [],
+                            replace: true,
+                            mediaQuery: false,
+                            minPixelValue: 0,
+                          }),
                         ],
                       },
                     },
+                    {
+                      loader: "sass-loader" // compiles Sass to CSS
+                    }
                   ],
                 },
                 extractTextPluginOptions
@@ -222,7 +244,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
+            exclude: [/\.js$/, /\.html$/, /\.json$/],
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
@@ -242,6 +264,15 @@ module.exports = {
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
+      //scripts: [
+        //'//cdn.bootcss.com/babel-polyfill/7.0.0-beta.3/polyfill.min.js',
+        //'//cdn.bootcss.com/react/16.2.0/umd/react.production.min.js',
+        //'//cdn.bootcss.com/react-dom/16.2.0/umd/react-dom.production.min.js',
+        //'//cdn.bootcss.com/redux/3.7.2/redux.min.js',
+        //'//cdn.bootcss.com/react-redux/5.0.6/react-redux.min.js',
+        //'//cdn.bootcss.com/redux-thunk/2.2.0/redux-thunk.min.js',
+        //'//cdn.bootcss.com/react-router-dom/4.2.2/react-router-dom.min.js'
+      //],
       inject: true,
       template: paths.appHtml,
       minify: {
@@ -274,7 +305,7 @@ module.exports = {
       },
       mangle: {
         safari10: true,
-      },
+      },        
       output: {
         comments: false,
         // Turned on because emoji and regex is not minified properly using default
