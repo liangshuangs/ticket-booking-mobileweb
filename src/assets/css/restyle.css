@@ -51,16 +51,16 @@ a {
 .wrap {
   width: 100%;
   height: 100%;
-  padding-top: 58PX;
+  padding-top: 59PX;
   background-color: #f3f3f3;
 }
 
 .ios .wrap {
-  padding-top: 76PX;
+  padding-top: 77PX;
 }
 
 .iosx .wrap {
-  padding-top: 98PX;
+  padding-top: 99PX;
 }
 
 .main {
