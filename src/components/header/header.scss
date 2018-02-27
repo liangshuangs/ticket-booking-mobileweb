@@ -23,6 +23,9 @@ $height: 48PX;
     height: $height;
     line-height: $height;
     text-align: center;
+    .iconfont {
+      font-size: 16PX;
+    }
   }
   .left {
     left: 0;

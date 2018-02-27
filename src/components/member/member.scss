@@ -1,0 +1,77 @@
+.member {
+	.list {
+		margin: 0;
+		padding: 0;
+		li {
+			position: relative;
+			float: left;
+			width: 20%;
+			list-style: none;
+			.avatar {
+				display: block;
+				overflow: hidden;
+				padding: 34px 40px 0;
+				i {
+					position: relative;
+					display: block;
+					overflow: hidden;
+					height: 0;
+					padding-top: 100%;
+					border-radius: 50%;
+					background-color: #b2b2b2;
+					img {
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.add {
+					border: 2px solid #b2b2b2;
+					background: none;
+					cursor: pointer;
+				}
+				.add:before {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					width: 100px;
+					height: 100px;
+					margin: -50px 0 0 -50px;
+					line-height: 100px;
+					text-align: center;
+					font-size: 80px;
+					color: #b2b2b2;
+				}
+			}
+			.username {
+				display: block;
+				height: 76px;
+				line-height: 76px;
+				text-align: center;
+			}
+			.close {
+				position: absolute;
+				top: 0;
+				left: 50%;
+				width: 116px;
+				height: 116px;
+				padding: 25px;
+				cursor: pointer;
+				.iconfont {
+					display: block;
+					width: 56px;
+					height: 56px;
+					border: 4px solid #fff;
+					border-radius: 50%;
+					line-height: 48px;
+					text-align: center;
+					background-color: #b2b2b2;
+					font-size: 20px;
+					color: #fff;
+				}
+			}
+		}
+	}
+}

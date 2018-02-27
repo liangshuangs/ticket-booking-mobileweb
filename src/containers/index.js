@@ -4,7 +4,9 @@ import { bindActionCreators } from 'redux';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import '../assets/css/normalize.css'
 import '../assets/css/restyle.css'
-import Home from '../components/home/home'
+import '../assets/iconfont/iconfont.css'
+import Home from './home'
+import Passenger from '../components/passenger/passenger'
 import env from '../config/env'
 
 
@@ -35,7 +37,7 @@ class Container extends React.Component {
       <Router basename={env.ROOT_PATH}>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/home" component={Home} />
+          <Route path="/passenger" component={Passenger} />
         </Switch>
       </Router>)
   }

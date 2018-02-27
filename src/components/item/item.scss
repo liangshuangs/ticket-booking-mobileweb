@@ -1,0 +1,33 @@
+.item {
+	padding-left: 40px;
+	font-size: 42px;
+	> div {
+		padding-right: 98px;
+		border-bottom: 1PX solid #e6e6e6;
+	> label,
+	> span {
+		height: 140px;
+		line-height: 140px;
+	}
+	> label {
+		float: left;
+	}
+	> span {
+		float: right;
+		color: #999;
+		i {
+			float: right;
+			margin-right: -88px;
+			width: 88px;
+			height: 140px;
+			text-align: center;
+		}
+	}
+	}
+}
+
+.item.noborder {
+	> div {
+		border-bottom: none;
+	}
+}

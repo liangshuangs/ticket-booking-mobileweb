@@ -64,6 +64,22 @@ a {
 }
 
 .main {
+  position: relative;
   height: 100%;
+  padding-bottom: 300px;
   background-color: #fff;
+}
+
+.body {
+  height: 100%;
+}
+
+.scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.main.scroll {
+  padding-bottom: 0;
+  background-color: transparent;
 }
