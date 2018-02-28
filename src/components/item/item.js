@@ -11,7 +11,7 @@ export default class Component extends React.Component {
       <div className={`item ${className}`}>
         <div className="clearfix">
           <label>{label}</label>
-          <span onClick={()=>{onClick()}}>{value}{type === "check" ? <i className="iconfont icon-next" /> : null}</span>
+          <span onClick={()=>{type === "check" ? onClick() : false}}>{value}{type === "check" ? <i className="iconfont icon-next" /> : null}</span>
         </div>
       </div>
     );

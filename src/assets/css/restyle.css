@@ -73,6 +73,7 @@ a {
 
 .body {
   height: 100%;
+  border-top: 1PX solid #dcdcdc;
 }
 
 .scroll {

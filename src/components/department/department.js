@@ -4,6 +4,7 @@ import Header from '../header/header'
 import Footer from '../footer/footer'
 import Item from '../item/item'
 import Tabs from '../tabs/tabs'
+import Tost from '../tost/tost'
 
 export default class Component extends React.Component {
 
@@ -50,18 +51,21 @@ export default class Component extends React.Component {
 
 
   render() {
-    const { department=[], changeCostDepartment } = this.props
+    const { department={}, historyBack, updateCostDepartment, tost } = this.props
     const { costDepartment=0 } = department
     return (
       <div className="wrap index clearfix">
-        <Header title="选择费用部门" left="icon-return" />
+        <Header title="选择费用部门" left="icon-return" leftClick={historyBack} />
         <div className="main">
           <div className="body scroll department">
             <h2>费用部门</h2>
-            <Tabs data={this.getTabData()} index={costDepartment} onClick={changeCostDepartment} />
+            <Tabs data={this.getTabData()} index={costDepartment} />
           </div>
         </div>
-        <Footer />
+        <Footer onClick={()=>{updateCostDepartment(1)}} />
+        {tost ? <Tost><p>{tost}</p></Tost> : null}
+        {tost ? <Tost time={4}><p>1</p></Tost> : null}
+        {tost ? <Tost time={8}><p>2</p></Tost> : null}
       </div>
     );
   }

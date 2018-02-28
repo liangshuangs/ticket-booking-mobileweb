@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Home from '../components/home/home'
+import Passenger from '../components/passenger/passenger'
 
 
 const mapStateToProps = state => ({
@@ -24,21 +24,18 @@ class Container extends React.Component {
   componentWillMount(){
   }
 
-  selectPassenger = () => {
-    this.props.history.push('/passenger')
+  historyBack = () => {
+    this.props.history.goBack()
   }
 
-  selectDepartment = () => {
-    this.props.history.push('/department')
-  }
 
   render() {
 
-    const { selectPassenger, selectDepartment } = this
+    const { historyBack } = this
 
-    const props = {...this.props, selectPassenger, selectDepartment}
+    const props = {...this.props, historyBack}
 
-    return (<Home {...props} />)
+    return (<Passenger {...props} />)
   }
 }
 

@@ -3,11 +3,13 @@ import './header.scss'
 
 export default class Component extends React.Component {
 
-  getIcon = (type,value) => {
+  getIcon = (type, value, onClick) => {
     if(value && /^icon-/.test(value)) {
-      return <span className={`icon ${type}`} ><i className={`iconfont ${value}`}/></span>
+      return <span className={`icon ${type}`} onClick={()=>{onClick ? onClick() : false}} >
+        <i className={`iconfont ${value}`}/>
+      </span>
     }else if(typeof value === 'string') {
-      return <span className={`icon ${type}`} >
+      return <span className={`icon ${type}`} onClick={()=>{onClick ? onClick() : false}} >
         {value}
       </span>
     }else{
@@ -17,13 +19,13 @@ export default class Component extends React.Component {
 
   render() {
 
-    const {title, left, right} = this.props
+    const {title, left, right, leftClick, rightClick} = this.props
 
     return (
       <div className="header">
         <span className="title">{title}</span>
-        {this.getIcon('left',left)}
-        {this.getIcon('right',right)}
+        {this.getIcon('left',left, leftClick)}
+        {this.getIcon('right',right, rightClick)}
       </div>
     );
   }

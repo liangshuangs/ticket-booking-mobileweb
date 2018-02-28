@@ -20,15 +20,29 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      tost: null,
     }
   }
 
   componentWillMount(){
   }
 
+  historyBack = () => {
+    this.props.history.goBack()
+  }
+
+  updateCostDepartment = (department) => {
+    if(department === 1) {
+      this.setState({tost:"提示信息"})
+    }
+  }
+
   render() {
 
-    const props = {...this.props}
+    const { historyBack, updateCostDepartment } = this
+    const { tost } = this.state
+
+    const props = {...this.props, historyBack, updateCostDepartment, tost}
 
     return (<Department {...props} />)
   }

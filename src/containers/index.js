@@ -6,7 +6,7 @@ import '../assets/css/normalize.css'
 import '../assets/css/restyle.css'
 import '../assets/iconfont/iconfont.css'
 import Home from './home'
-import Passenger from '../components/passenger/passenger'
+import Passenger from './passenger'
 import Department from './department'
 import env from '../config/env'
 
