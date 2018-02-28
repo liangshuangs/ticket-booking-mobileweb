@@ -22,7 +22,7 @@ export default class Component extends React.Component {
             <Item type="info" label="CC(成本中心)：" value="123456" />
             <Item type="info" label="审批人：" value="姚世琪" />
           </div>
-          <Footer/>
+          <Footer hint/>
         </div>
       </div>
     );

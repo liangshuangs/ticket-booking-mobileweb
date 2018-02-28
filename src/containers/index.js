@@ -7,6 +7,7 @@ import '../assets/css/restyle.css'
 import '../assets/iconfont/iconfont.css'
 import Home from './home'
 import Passenger from '../components/passenger/passenger'
+import Department from './department'
 import env from '../config/env'
 
 
@@ -38,6 +39,7 @@ class Container extends React.Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/passenger" component={Passenger} />
+          <Route path="/department" component={Department} />
         </Switch>
       </Router>)
   }

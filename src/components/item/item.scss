@@ -1,6 +1,5 @@
 .item {
 	padding-left: 40px;
-	font-size: 42px;
 	> div {
 		padding-right: 98px;
 		border-bottom: 1PX solid #e6e6e6;
@@ -29,5 +28,11 @@
 .item.noborder {
 	> div {
 		border-bottom: none;
+	}
+}
+
+.item.topborder {
+	> div {
+		border-top: 1PX solid #e6e6e6;
 	}
 }
