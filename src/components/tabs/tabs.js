@@ -5,21 +5,12 @@ export default class Component extends React.Component {
 
   constructor(props) {
     super(props)
-    const {index=0} = this.props
-    this.state = {
-      tabIndex: index
-    }
-  }
-
-  setTabIndex = (tabIndex) => {
-    this.setState({tabIndex})
   }
 
   getTitle = () => {
-    const { data } = this.props
-    const { tabIndex } = this.state
+    const { data, tabsIndex, changeTabsIndex } = this.props
     const li = data.map((v,i)=>{
-      return <li key={i} className={tabIndex === i ? "active" : ""} onClick={()=>{this.setTabIndex(i)}}>
+      return <li key={i} className={tabsIndex === i ? "active" : ""} onClick={()=>{changeTabsIndex(i)}}>
         <i className="iconfont icon-check" />
         <i className="iconfont icon-checked" />
         <span>{v.name}</span>
@@ -32,9 +23,8 @@ export default class Component extends React.Component {
   }
 
   getPanel = () => {
-    const { data } = this.props
-    const { tabIndex } = this.state
-    return data[tabIndex].panel
+    const { data, tabsIndex } = this.props
+    return data[tabsIndex].panel
   }
 
   render() {

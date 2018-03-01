@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Department from '../components/department/department'
-import { changeCostDepartment } from '../action/department'
+import { changeCostDepartment, changeTabsIndex } from '../action/department'
+import tost from '../components/tost/tost'
 
 
 const mapStateToProps = state => ({
@@ -12,6 +13,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     changeCostDepartment,
+    changeTabsIndex,
   }, dispatch)
 );
 
@@ -20,11 +22,11 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tost: null,
     }
   }
 
   componentWillMount(){
+
   }
 
   historyBack = () => {
@@ -32,17 +34,16 @@ class Container extends React.Component {
   }
 
   updateCostDepartment = (department) => {
-    if(department === 1) {
-      this.setState({tost:"提示信息"})
-    }
+    this.props.changeCostDepartment(department) // 确定费用部门后 保存部门ID
+    tost('消息1 2秒')
+    tost({msg:'message2',time:4})
+    tost({msg:'message3',time:6})
   }
 
   render() {
-
     const { historyBack, updateCostDepartment } = this
-    const { tost } = this.state
 
-    const props = {...this.props, historyBack, updateCostDepartment, tost}
+    const props = {...this.props, historyBack, updateCostDepartment}
 
     return (<Department {...props} />)
   }

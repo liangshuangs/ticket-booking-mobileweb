@@ -4,3 +4,10 @@ export function changeCostDepartment(department) {
     department,
   }
 }
+
+export function changeTabsIndex(tabsIndex) {
+  return {
+    type: 'CHANGE_TABS_INDEX',
+    tabsIndex,
+  }
+}

@@ -1,37 +1,36 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
 import './tost.scss'
+export default function tost(info){
+  let tost = document.querySelector('#tost')
+  if(!tost) {
+    tost = document.createElement('div')
+    tost.id = 'tost'
+    tost.classList.add('tost')
+    document.body.appendChild(tost)
+  }
 
-export default class Component extends React.Component {
-  constructor(props){
-    super(props)
-    this.tost = document.querySelector('#tost')
-    if(!this.tost) {
-      this.tost = document.createElement('div')
-      this.tost.classList.add('tost')
-      this.tost.id = 'tost'
-      document.body.appendChild(this.tost)
+  const item = document.createElement('div')
+  item.classList.add('tost-item')
+
+  let msg = ''
+  let time = 2
+  if(typeof info === 'string') {
+    msg = info
+  }else{
+    msg = info.msg
+    time = info.time
+  }
+
+
+  const megNode = document.createTextNode(msg)
+
+  item.appendChild(megNode)
+
+  tost.appendChild(item)
+
+  setTimeout(()=>{
+    tost.removeChild(item)
+    if(!tost.hasChildNodes()){
+      document.body.removeChild(tost)
     }
-
-    this.id = `${new Date().getTime()}${Math.ceil(Math.random()*100)}`
-
-  }
-
-  componentDidMount() {
-    //console.log(this.tost.querySelectorAll('div').length)
-  }
-
-  componentWillUnmount() {
-
-    //document.body.removeChild(this.tost)
-  }
-
-  render() {
-    
-    return ReactDOM.createPortal(
-      <div className="tost-item" id={this.id}>{this.props.children}</div>,
-      this.tost
-    )
-  }
-
+  },time*1000)
 }

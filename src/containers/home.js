@@ -2,14 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Home from '../components/home/home'
+import { changeTabsIndex } from '../action/department'
 
 
 const mapStateToProps = state => ({
-
+  costDepartment: state.department.costDepartment
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
+    changeTabsIndex
   }, dispatch)
 );
 
@@ -22,10 +24,13 @@ class Container extends React.Component {
   }
 
   componentWillMount(){
+    const { changeTabsIndex, costDepartment=0 } = this.props
+    changeTabsIndex(costDepartment)
   }
 
   selectPassenger = () => {
-    this.props.history.push('/passenger')
+    //this.props.history.push('/passenger')
+    this.props.history.replace('/passenger')
   }
 
   selectDepartment = () => {
