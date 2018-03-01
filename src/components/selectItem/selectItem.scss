@@ -1,0 +1,37 @@
+.select-item {
+	> ul {
+	margin: 0;
+	padding-left: 40px;
+	border-top: 1PX SOLID #e0e0e0;
+	border-bottom: 1PX SOLID #e0e0e0;
+	background-color: #fff;
+	 > li {
+	 position: relative;
+	 height: 175px;
+	 padding: 27px 130px 27px 0;
+	 list-style: none;
+	 border-bottom: 1PX solid #e0e0e0;
+	 	> p {
+	 		margin: 0;
+	 		line-height: 60px;
+	 	}
+	 	> a {
+	 		position: absolute;
+	 		top: 0;
+	 		right: 0;
+	 		width: 130px;
+	 		height: 174px;
+	 		line-height: 174px;
+	 		text-align: center;
+	 		font-size: 90px;
+			color: #666;
+			i {
+				vertical-align: middle;
+			}
+	 	}
+	 }
+	 > li:last-child {
+			border: none;
+	 }
+	}
+}

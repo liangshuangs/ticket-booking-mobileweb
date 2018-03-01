@@ -22,6 +22,7 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      approverModalShow: false,
     }
   }
 
@@ -33,6 +34,18 @@ class Container extends React.Component {
     this.props.history.goBack()
   }
 
+  gotoCostcenter = () => {
+    this.props.history.push('/costcenter')
+  }
+
+  gotoProject = () => {
+    this.props.history.push('/project')
+  }
+
+  gotoRemark = () => {
+    this.props.history.push('/remark')
+  }
+
   updateCostDepartment = (department) => {
     this.props.changeCostDepartment(department) // 确定费用部门后 保存部门ID
     tost('消息1 2秒')
@@ -40,10 +53,16 @@ class Container extends React.Component {
     tost({msg:'message3',time:6})
   }
 
-  render() {
-    const { historyBack, updateCostDepartment } = this
+  toggleApproverModal = () => {
+    this.setState((old)=>(
+      {...old, approverModalShow: !old.approverModalShow}
+    ))
+  }
 
-    const props = {...this.props, historyBack, updateCostDepartment}
+  render() {
+    const { historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal } = this
+    const { approverModalShow } = this.state
+    const props = {...this.props, historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow}
 
     return (<Department {...props} />)
   }

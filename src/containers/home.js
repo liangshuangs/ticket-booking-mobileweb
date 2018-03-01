@@ -29,8 +29,7 @@ class Container extends React.Component {
   }
 
   selectPassenger = () => {
-    //this.props.history.push('/passenger')
-    this.props.history.replace('/passenger')
+    this.props.history.push('/passenger')
   }
 
   selectDepartment = () => {

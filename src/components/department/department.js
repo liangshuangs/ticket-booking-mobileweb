@@ -4,6 +4,8 @@ import Header from '../header/header'
 import Footer from '../footer/footer'
 import Item from '../item/item'
 import Tabs from '../tabs/tabs'
+import Modal from '../modal/modal'
+import Approver from '../approver/approver'
 
 export default class Component extends React.Component {
 
@@ -35,22 +37,24 @@ export default class Component extends React.Component {
   }
 
   getOtherPanel = () => {
+    const { gotoCostcenter, toggleApproverModal } = this.props
     return <div className="panel">
-      <Item type="check" className="topborder" label="CC(成本中心):" value="亚信中国" />
-      <Item type="check" label="跨部门审批人:" value="亚信中国" />
+      <Item type="check" className="topborder" label="CC(成本中心):" value="亚信中国" onClick={gotoCostcenter} />
+      <Item type="check" label="跨部门审批人:" value="选择审批人" onClick={()=>{toggleApproverModal()}} />
     </div>
   }
 
   getProjectPanel = () => {
+    const { gotoProject, gotoRemark } = this.props
     return <div className="panel">
-      <Item type="check" className="topborder" label="项目编码:" value="亚信中国" />
-      <Item type="info" label="其他" value="亚信中国" />
+      <Item type="check" className="topborder" label="项目编码:" value="亚信中国" onClick={gotoProject} />
+      <Item type="info" label="其他:" value="请输入备注" onClick={gotoRemark} />
     </div>
   }
 
 
   render() {
-    const { department={}, historyBack, updateCostDepartment, changeTabsIndex } = this.props
+    const { department={}, historyBack, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal } = this.props
     const { costDepartment=0, tabsIndex=0 } = department
     return (
       <div className="wrap index clearfix">
@@ -62,6 +66,9 @@ export default class Component extends React.Component {
           </div>
         </div>
         <Footer onClick={()=>{updateCostDepartment(tabsIndex)}} />
+        {approverModalShow ? <Modal onMask={toggleApproverModal}>
+          <Approver onClose={toggleApproverModal} />
+        </Modal> : null}
       </div>
     );
   }

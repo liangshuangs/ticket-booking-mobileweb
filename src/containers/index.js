@@ -8,6 +8,9 @@ import '../assets/iconfont/iconfont.css'
 import Home from './home'
 import Passenger from './passenger'
 import Department from './department'
+import Costcenter from './costcenter'
+import Project from './project'
+import Remark from './remark'
 import env from '../config/env'
 
 
@@ -40,6 +43,9 @@ class Container extends React.Component {
           <Route exact path="/" component={Home} />
           <Route path="/passenger" component={Passenger} />
           <Route path="/department" component={Department} />
+          <Route path="/costcenter" component={Costcenter} />
+          <Route path="/project" component={Project} />
+          <Route path="/remark" component={Remark} />
         </Switch>
       </Router>)
   }
