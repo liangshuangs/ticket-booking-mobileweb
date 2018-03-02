@@ -12,14 +12,16 @@ import Costcenter from './costcenter'
 import Project from './project'
 import Remark from './remark'
 import env from '../config/env'
+import { getUserInfo } from '../action/home'
 
 
 const mapStateToProps = state => ({
-
+  userInfo: state.user.info,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
+    getUserInfo,
   }, dispatch)
 );
 
@@ -33,9 +35,16 @@ class Container extends React.Component {
   }
 
   componentWillMount(){
+    this.props.getUserInfo() // 获取用户信息
   }
 
   render() {
+
+    const { userInfo } = this.props
+    console.log(userInfo,Object.keys(userInfo))
+    if(Object.keys(userInfo).length === 0) {
+      return null;
+    }
 
     return (
       <Router basename={env.ROOT_PATH}>

@@ -27,12 +27,15 @@ export default class Component extends React.Component {
   }
 
   getOwnPanel = () => {
+    const { department } = this.props
+    const { costDepartmentData } = department
+    const { companyName, regionName, costCenter, sbuId, parentStaffName } = costDepartmentData[0]
     return <div className="panel">
-      <Item type="info" className="topborder" label="Company(公司):" value="亚信中国" />
-      <Item type="info" label="Region(地区):" value="亚信中国" />
-      <Item type="info" label="CC(成本中心):" value="亚信中国" />
-      <Item type="info" label="P/L Code(利润中心):" value="亚信中国" />
-      <Item type="info" label="审批人" value="亚信中国" />
+      <Item type="info" className="topborder" label="Company(公司):" value={companyName} />
+      <Item type="info" label="Region(地区):" value={regionName} />
+      <Item type="info" label="CC(成本中心):" value={costCenter} />
+      <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
+      <Item type="info" label="审批人" value={parentStaffName} />
     </div>
   }
 

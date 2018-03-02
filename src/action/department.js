@@ -11,3 +11,9 @@ export function changeTabsIndex(tabsIndex) {
     tabsIndex,
   }
 }
+
+export const setCostDepartmentData = (index,data) => ({
+  type: 'SET_COST_DEPARTMENT_DATA',
+  index,
+  data,
+})

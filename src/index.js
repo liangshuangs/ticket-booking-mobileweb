@@ -38,12 +38,12 @@ function loader() {
 function bootstrap() {
   if(env.ENV === 'development') {
     if (window.location.hash && window.location.hash.indexOf('access_token=') > -1) {
-      window.sessionStorage.setItem('token', `${window.location.hash.split('access_token=')[1].split('&')[0]}`)
+      window.sessionStorage.setItem('token', `Bearer ${window.location.hash.split('access_token=')[1].split('&')[0]}`)
     }
     loader()
   } else {
     if (window.location.hash && window.location.hash.indexOf('access_token=') > -1) {
-      window.sessionStorage.setItem('token', `${window.location.hash.split('access_token=')[1].split('&')[0]}`)
+      window.sessionStorage.setItem('token', `Bearer ${window.location.hash.split('access_token=')[1].split('&')[0]}`)
       loader()
     } else if(window.kara) {
       getToken()

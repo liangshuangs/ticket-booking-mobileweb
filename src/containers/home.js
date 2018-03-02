@@ -2,18 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Home from '../components/home/home'
-import { getUserInfo } from '../action/home'
 import { changeTabsIndex } from '../action/department'
 
 
 const mapStateToProps = state => ({
-  costDepartment: state.department.costDepartment
+  costDepartment: state.department.costDepartment,
+  costDepartmentData: state.department.costDepartmentData,
+  userInfo: state.user.info,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     changeTabsIndex,
-    getUserInfo,
   }, dispatch)
 );
 
@@ -26,9 +26,8 @@ class Container extends React.Component {
   }
 
   componentWillMount(){
-    const { changeTabsIndex, costDepartment=0, getUserInfo } = this.props
-    changeTabsIndex(costDepartment)
-    getUserInfo() // 获取用户信息
+    const { changeTabsIndex, costDepartment=0 } = this.props
+    changeTabsIndex(costDepartment) // 重置 tabsIndex
   }
 
   selectPassenger = () => {
