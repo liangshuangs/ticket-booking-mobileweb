@@ -1,9 +1,10 @@
 import React from 'react'
+import _ from 'lodash'
 import Header from '../header/header'
 import Search from '../search/search'
 import SimpleTitle from '../simpleTitle/simpleTitle'
 import SelectPassenger from '../selectPassenger/selectPassenger'
-import {getPassenger} from "../../action/passenger";
+import {getPassenger, selectPassenger} from "../../action/passenger";
 
 export default class Component extends React.Component {
 
@@ -12,27 +13,52 @@ export default class Component extends React.Component {
     this.props.getPassengerCall(value, userInfo.bgId)
   }
 
-  getItemData = () => {
-    const { costCenterList } = this.props
-    return costCenterList.map((v,i)=>({
+  getSearchData = () => {
+    const { passengerList=[], selectPassengerList=[], selectPassengerListCache=[],  } = this.props
+
+    const allSelectList = selectPassengerList.concat(selectPassengerListCache)
+
+    if(passengerList.length === 0) {
+      return []
+    }
+    return passengerList.map((v,i)=>{
+
+      const isChecked = _.findIndex(allSelectList, ['EMPLOYEE_NUMBER', v.EMPLOYEE_NUMBER]) === -1 ? false : true
+
+      return{
+        ...v,
+        key: `key${i}`,
+        value: `${v.LAST_NAME}(${v.EMPLOYEE_NUMBER})`,
+        label: v.SBU_DESCRIPTION,
+        isChecked,
+      }
+    })
+  }
+
+  getSelectData = () => {
+    const { selectPassengerListCache=[] } = this.props
+    if(selectPassengerListCache.length === 0) {
+      return []
+    }
+    return selectPassengerListCache.map((v,i)=>({
       ...v,
       key: `key${i}`,
-      value: v.ccId,
-      label: v.ccName,
+      value: `${v.LAST_NAME}(${v.EMPLOYEE_NUMBER})`,
+      label: v.SBU_DESCRIPTION,
     }))
   }
 
   render() {
-    const { historyBack } = this.props
+    const { historyBack, selectPassengerCache, deletePassengerCache, selectPassengerConfirm } = this.props
     return (
       <div className="wrap index clearfix">
-        <Header title="选择乘机人" left="取消" right="完成" leftClick={historyBack} />
+        <Header title="选择乘机人" left="取消" right="完成" leftClick={historyBack} rightClick={selectPassengerConfirm} />
         <div className="main scroll">
           <Search placeholder="输入姓名／NT账号／手机号"  onChange={this.onChange} />
           <SimpleTitle title="已选择" />
-          <SelectPassenger />
+          <SelectPassenger type="delete" data={this.getSelectData()} onDelete={deletePassengerCache} />
           <SimpleTitle title="常用乘机人" />
-          <SelectPassenger />
+          <SelectPassenger type="select" data={this.getSearchData()} onSelect={selectPassengerCache} />
           <SimpleTitle title="" />
         </div>
       </div>

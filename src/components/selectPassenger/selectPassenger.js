@@ -4,18 +4,37 @@ import defaultuser from '../../assets/images/defaultuser.png'
 
 export default class Component extends React.Component {
 
+  getIcon = (item,type,isChecked) => {
+    if(type === 'delete') {
+      const { onDelete } = this.props
+      return <a onClick={()=>{onDelete(item)}}>
+        <i className="iconfont icon-delete" />
+      </a>
+    }else if(isChecked) {
+      return <a>
+        <i className="iconfont icon-checked" />
+      </a>
+    }else{
+      const { onSelect } = this.props
+      return <a onClick={()=>{onSelect(item)}}>
+        <i className="iconfont icon-check" />
+      </a>
+    }
+  }
+
   getList = () => {
-    const li = [0,1,2].map((v,i)=>{
+    const { data=[], type } = this.props
+    if(data.length === 0) {
+      return null
+    }
+    const li = data.map((v,i)=>{
       return <li key={i}>
         <img src={defaultuser}/>
         <div className="info">
-          <span>徐军 (35023)</span>
-          <span>亚信软件</span>
-          <span>身份证：41150101010101010</span>
+          <span>{v.value}</span>
+          <span>{v.label}</span>
         </div>
-        <a>
-          <i className="iconfont icon-delete" />
-        </a>
+        {this.getIcon(v,type, v.isChecked)}
       </li>
     })
 

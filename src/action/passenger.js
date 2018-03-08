@@ -9,3 +9,13 @@ export const getPassenger = (kw, bgId, pageNumber=1, pageSize=10) => ({
     types: ['GET_PASSENGER_SUCCESS'],
   },
 })
+
+export const selectPassenger = (selectList) => ({
+  type: 'SELECT_PASSENGER',
+  selectList,
+})
+
+export const deletePassenger = (item) => ({
+  type: 'DELETE_PASSENGER',
+  item,
+})
