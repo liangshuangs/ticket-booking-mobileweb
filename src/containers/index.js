@@ -41,7 +41,6 @@ class Container extends React.Component {
   render() {
 
     const { userInfo } = this.props
-    console.log(userInfo,Object.keys(userInfo))
     if(Object.keys(userInfo).length === 0) {
       return null;
     }

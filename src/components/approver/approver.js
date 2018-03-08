@@ -4,8 +4,10 @@ import './approver.scss'
 export default class Component extends React.Component {
 
   getList = () => {
-    const li = [1,2,3].map((v,i)=>{
-      return <li key={i}>姓名</li>
+    const { data=[], onSelect, onClose } = this.props
+
+    const li = data.map((v,i)=>{
+      return <li key={i} onClick={()=>{onSelect(v);onClose()}}>{v.text}</li>
     })
 
     return <ul>

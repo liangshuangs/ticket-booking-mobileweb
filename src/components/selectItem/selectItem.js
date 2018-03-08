@@ -4,11 +4,18 @@ import './selectItem.scss'
 export default class Component extends React.Component {
 
   getList = () => {
-    const li = [0,1,2].map((v,i)=>{
-      return <li key={i}>
-        <p>111</p>
-        <p>abc</p>
-        <a><i className="iconfont icon-check"/></a>
+    const { data, onSelect, selectKey } = this.props
+    if(data.length === 0) {
+      return null
+    }
+    const li = data.map((v)=>{
+      return <li key={v.key} className={`${selectKey && selectKey===v.key ? 'select' : ''}`}>
+        <p>{v.value}</p>
+        <p>{v.label}</p>
+        <a onClick={()=>{onSelect(v)}}>
+          <i className="iconfont icon-check"/>
+          <i className="iconfont icon-checked"/>
+        </a>
       </li>
     })
 

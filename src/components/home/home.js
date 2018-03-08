@@ -8,11 +8,16 @@ export default class Component extends React.Component {
 
   getItem = () => {
     const { selectDepartment, costDepartment, costDepartmentData } = this.props
-    const { costCenter, parentStaffName } = costDepartmentData[costDepartment]
-    if(costDepartment <=1) {
-      return[<Item key={0} type="check" label="费用部门：" value={costDepartment === 0 ? "本部门结算" : "跨部门结算"} onClick={selectDepartment} />,
+    if(costDepartment == 0) {
+      const { costCenter, parentStaffName } = costDepartmentData[0]
+      return[<Item key={0} type="check" label="费用部门：" value="本部门结算" onClick={selectDepartment} />,
       <Item key={1} type="info" label="CC(成本中心)：" value={costCenter} />,
       <Item key={2} type="info" label="审批人：" value={parentStaffName} />]
+    }else if(costDepartment === 1){
+      const { costCenter, approver } = costDepartmentData[1]
+      return[<Item key={0} type="check" label="费用部门：" value="跨部门结算" onClick={selectDepartment} />,
+        <Item key={1} type="info" label="CC(成本中心)：" value={costCenter.ccId} />,
+        <Item key={2} type="info" label="审批人：" value={approver.text} />]
     }else{
       return[<Item key={0} type="check" label="费用部门：" value="项目结算" onClick={selectDepartment} />,
       <Item key={1} type="info" label="项目编码：" value="123456" />,

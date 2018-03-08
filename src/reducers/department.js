@@ -6,8 +6,14 @@ const department = {
   tabsIndex: 0, // tabsIndex 优先 costDepartment，但进入首页 tabsIndex 和 costDepartment 保持一致
   costDepartmentData: [
     {},
-    {},
-    {}
+    {
+      costCenter:{}, // cc
+      approver:{} //审批人
+    },
+    {
+      projectInfoSimple:{},
+      projectInfo:{},
+    }
   ] // 费用部门数据
 }
 

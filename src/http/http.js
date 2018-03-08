@@ -7,6 +7,8 @@ export const httpApi = Symbol('call ajax api')
 
 // 解析
 function parseFetch(response) {
+  // TODO
+  return response.json()
   const type = response.headers.get('content-type')
   if (type.includes('application/json')) {
     return response.json()
@@ -91,7 +93,7 @@ export default (catchError) => store => next => action => {
 
   return requestApi(url, options)
       .then((response) => {
-        if (response.resultCode === '000000') {
+        if (response.resultCode === '000000' || response.result === '0000') {
           return next(actionWith({
             type: successType,
             response,

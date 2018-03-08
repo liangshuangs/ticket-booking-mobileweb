@@ -28,10 +28,27 @@
 			i {
 				vertical-align: middle;
 			}
+			i.icon-check {
+				display: inline-block;
+			}
+			i.icon-checked {
+				display: none;
+			}
 	 	}
 	 }
 	 > li:last-child {
 			border: none;
+	 }
+	 > li.select {
+		 > a {
+			 i.icon-check {
+				 display: none;
+			 }
+			 i.icon-checked {
+				 display: inline-block;
+				 color: #ff8928;
+			 }
+		 }
 	 }
 	}
 }

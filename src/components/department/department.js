@@ -40,24 +40,55 @@ export default class Component extends React.Component {
   }
 
   getOtherPanel = () => {
-    const { gotoCostcenter, toggleApproverModal } = this.props
-    return <div className="panel">
-      <Item type="check" className="topborder" label="CC(成本中心):" value="亚信中国" onClick={gotoCostcenter} />
-      <Item type="check" label="跨部门审批人:" value="选择审批人" onClick={()=>{toggleApproverModal()}} />
-    </div>
+    const { gotoCostcenter, toggleApproverModal, department } = this.props
+    const { costDepartmentData } = department
+    const { costCenter, approver={} } = costDepartmentData[1]
+    if( Object.keys(costCenter).length === 0) {
+      return <div className="panel">
+        <Item type="check" className="topborder" label="CC(成本中心):" value="亚信中国" onClick={gotoCostcenter} />
+        <Item type="check" label="跨部门审批人:" value="选择审批人" onClick={()=>{toggleApproverModal()}} />
+      </div>
+    }else{
+      const { companyName, regionName, sbuId, ccId } = costCenter
+      const {text:approverText="选择审批人"} = approver
+      return <div className="panel">
+        <Item type="info" className="topborder" label="Company(公司):" value={companyName} />
+        <Item type="info" label="Region(地区):" value={regionName} />
+        <Item type="check" label="CC(成本中心):" value={ccId} onClick={gotoCostcenter} />
+        <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
+        <Item type="check" label="跨部门审批人:" value={approverText} onClick={()=>{toggleApproverModal()}} />
+      </div>
+    }
   }
 
   getProjectPanel = () => {
-    const { gotoProject, gotoRemark } = this.props
-    return <div className="panel">
-      <Item type="check" className="topborder" label="项目编码:" value="亚信中国" onClick={gotoProject} />
-      <Item type="info" label="其他:" value="请输入备注" onClick={gotoRemark} />
-    </div>
+    const { gotoProject, gotoRemark, department } = this.props
+    const { costDepartmentData } = department
+    const { projectInfo, projectInfoSimple } = costDepartmentData[2]
+    if( Object.keys(projectInfo).length === 0) {
+      return <div className="panel">
+        <Item type="check" className="topborder" label="项目编码:" value="亚信中国" onClick={gotoProject} />
+        <Item type="info" label="其他:" value="请输入备注" onClick={gotoRemark} />
+      </div>
+    }else{
+      const {companyId,projectCode,projectId,projectName,projectType,sbuId} = projectInfoSimple
+      const {regionId, ccId} = projectInfo
+      return <div className="panel">
+        <Item type="check" className="topborder" label="项目编码:" value={projectId} onClick={gotoProject} />
+        <Item type="check" label="项目名称:" value={projectName} onClick={gotoProject} />
+        <Item type="info" label="任务号:" value={projectCode}  />
+        <Item type="info" label="Company(公司):" value={companyId} />
+        <Item type="info" label="Region(地区):" value={regionId} />
+        <Item type="info" label="CC(成本中心):" value={ccId}  />
+        <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
+        <Item type="info" label="审批人" value={4} />
+      </div>
+    }
   }
 
 
   render() {
-    const { department={}, historyBack, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal } = this.props
+    const { department={}, historyBack, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal, approverData, selectOtherDepartmentApprover } = this.props
     const { costDepartment=0, tabsIndex=0 } = department
     return (
       <div className="wrap index clearfix">
@@ -70,7 +101,7 @@ export default class Component extends React.Component {
         </div>
         <Footer onClick={()=>{updateCostDepartment(tabsIndex)}} />
         {approverModalShow ? <Modal onMask={toggleApproverModal}>
-          <Approver onClose={toggleApproverModal} />
+          <Approver onClose={toggleApproverModal} data={approverData} onSelect={selectOtherDepartmentApprover} />
         </Modal> : null}
       </div>
     );
