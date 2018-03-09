@@ -3,17 +3,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import Passenger from '../components/passenger/passenger'
-import { getPassenger, selectPassenger, deletePassenger } from '../action/passenger'
+import { getPassenger, getRecentPassenger, selectPassenger, deletePassenger } from '../action/passenger'
 
 
 const mapStateToProps = state => ({
   userInfo: state.user.info,
-  selectPassengerList: state.passenger.selectList
+  selectPassengerList: state.passenger.selectList,
+  recentPassengerList:state.passenger.recentList,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     getPassenger,
+    getRecentPassenger,
     selectPassenger,
     deletePassenger,
   }, dispatch)
@@ -26,10 +28,15 @@ class Container extends React.Component {
     this.state = {
       passengerList: [],
       selectPassengerListCache: [],
+      isSearch:false, // 是否在搜索
     }
   }
 
   componentWillMount(){
+    const { userInfo, getRecentPassenger } = this.props
+    // 获取近期乘机人
+    //getRecentPassenger(userInfo.personId)
+    getRecentPassenger('67502')
   }
 
   historyBack = () => {
@@ -38,11 +45,16 @@ class Container extends React.Component {
 
   getPassengerCall = (value,bgId) => {
     this.props.getPassenger(value,bgId).then(res=>{
-      console.log('res',res)
       if(res && res.response && res.response.result === '0000') {
         this.setState({passengerList:res.response.data})
       }
     })
+
+    if(value !== '') {
+      this.setState({isSearch: true})
+    }else{
+      this.setState({isSearch: false})
+    }
   }
 
   selectPassengerCache = (item) => {
@@ -58,7 +70,6 @@ class Container extends React.Component {
     const {selectPassengerListCache} = this.state
     const list = selectPassengerListCache.slice(0)
     const deleteList = _.remove(list,(n)=>(n.EMPLOYEE_NUMBER === item.EMPLOYEE_NUMBER))
-    console.log('deleteList',deleteList)
     this.setState({selectPassengerListCache:list})
   }
 
@@ -73,11 +84,13 @@ class Container extends React.Component {
 
   render() {
 
+    console.log('1',this.props.recentPassengerList)
+
     const { historyBack, getPassengerCall, selectPassengerCache, deletePassengerCache, selectPassengerConfirm } = this
 
-    const { passengerList, selectPassengerListCache } = this.state
+    const { passengerList, selectPassengerListCache, isSearch } = this.state
 
-    const props = {...this.props, historyBack, getPassengerCall, passengerList, selectPassengerCache, selectPassengerListCache, deletePassengerCache, selectPassengerConfirm}
+    const props = {...this.props, historyBack, getPassengerCall, passengerList, selectPassengerCache, selectPassengerListCache, deletePassengerCache, selectPassengerConfirm, isSearch}
 
     return (<Passenger {...props} />)
   }

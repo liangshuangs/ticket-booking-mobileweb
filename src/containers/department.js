@@ -29,7 +29,6 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      approverData: [],
       approverModalShow: false,
     }
   }
@@ -96,7 +95,6 @@ class Container extends React.Component {
       const {ccId} = costCenter
       getOtherDepartmentApprover(ccId).then(res=>{
         if(res && res.response && res.response.result === '0000' && res.response.data && res.response.data.length > 0) {
-          this.setState({approverData:res.response.data})
         }else{
           tost('没有相关审批人')
         }
@@ -170,8 +168,8 @@ class Container extends React.Component {
 
   render() {
     const { historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, selectOtherDepartmentApprover } = this
-    const { approverModalShow, approverData } = this.state
-    const props = {...this.props, historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow, approverData, selectOtherDepartmentApprover}
+    const { approverModalShow } = this.state
+    const props = {...this.props, historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow, selectOtherDepartmentApprover}
 
     return (<Department {...props} />)
   }

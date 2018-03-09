@@ -43,6 +43,7 @@ export default class Component extends React.Component {
     const { gotoCostcenter, toggleApproverModal, department } = this.props
     const { costDepartmentData } = department
     const { costCenter, approver={} } = costDepartmentData[1]
+    console.log('costDepartmentData[1]',costDepartmentData[1])
     if( Object.keys(costCenter).length === 0) {
       return <div className="panel">
         <Item type="check" className="topborder" label="CC(成本中心):" value="亚信中国" onClick={gotoCostcenter} />
@@ -89,7 +90,7 @@ export default class Component extends React.Component {
 
 
   render() {
-    const { department={}, historyBack, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal, approverData, selectOtherDepartmentApprover } = this.props
+    const { department={}, historyBack, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal, selectOtherDepartmentApprover } = this.props
     const { costDepartment=0, tabsIndex=0 } = department
     return (
       <div className="wrap index clearfix">
@@ -102,7 +103,7 @@ export default class Component extends React.Component {
         </div>
         <Footer onClick={()=>{updateCostDepartment(tabsIndex)}} />
         {approverModalShow ? <Modal onMask={toggleApproverModal}>
-          <Approver onClose={toggleApproverModal} data={approverData} onSelect={selectOtherDepartmentApprover} />
+          <Approver onClose={toggleApproverModal} data={department.costDepartmentData[1].approverData} onSelect={selectOtherDepartmentApprover} />
         </Modal> : null}
       </div>
     );

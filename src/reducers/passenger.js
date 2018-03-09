@@ -2,7 +2,8 @@ import _ from 'lodash'
 import caseReducer from './caseReducer'
 
 const passenger = {
-  selectList:[]
+  selectList:[], // 已经选择
+  recentList:[], //最近
 }
 
 function selectPassenger(state, action) {
@@ -18,7 +19,12 @@ function deletePassenger(state, action) {
   return {...state, selectList}
 }
 
+function getRecentPassenger(state, action) {
+  return {...state,recentList:action.response.data}
+}
+
 export default caseReducer(passenger, {
   SELECT_PASSENGER: selectPassenger,
   DELETE_PASSENGER: deletePassenger,
+  GET_RECENT_PASSENGER_SUCCESS:getRecentPassenger,
 })

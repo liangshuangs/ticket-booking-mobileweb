@@ -14,14 +14,16 @@ export default class Component extends React.Component {
   }
 
   getSearchData = () => {
-    const { passengerList=[], selectPassengerList=[], selectPassengerListCache=[],  } = this.props
+    const { passengerList=[], recentPassengerList=[], selectPassengerList=[], selectPassengerListCache=[], isSearch  } = this.props
 
     const allSelectList = selectPassengerList.concat(selectPassengerListCache)
 
-    if(passengerList.length === 0) {
+    const list =  isSearch ? passengerList : recentPassengerList
+
+    if(list.length === 0) {
       return []
     }
-    return passengerList.map((v,i)=>{
+    return list.map((v,i)=>{
 
       const isChecked = _.findIndex(allSelectList, ['EMPLOYEE_NUMBER', v.EMPLOYEE_NUMBER]) === -1 ? false : true
 
@@ -49,7 +51,7 @@ export default class Component extends React.Component {
   }
 
   render() {
-    const { historyBack, selectPassengerCache, deletePassengerCache, selectPassengerConfirm } = this.props
+    const { historyBack, selectPassengerCache, deletePassengerCache, selectPassengerConfirm, isSearch } = this.props
     return (
       <div className="wrap index clearfix">
         <Header title="选择乘机人" left="取消" right="完成" leftClick={historyBack} rightClick={selectPassengerConfirm} />
@@ -57,7 +59,7 @@ export default class Component extends React.Component {
           <Search placeholder="输入姓名／NT账号／手机号"  onChange={this.onChange} />
           <SimpleTitle title="已选择" />
           <SelectPassenger type="delete" data={this.getSelectData()} onDelete={deletePassengerCache} />
-          <SimpleTitle title="常用乘机人" />
+          <SimpleTitle title={`${isSearch ? '搜索结果' : '常用乘机人'}`} />
           <SelectPassenger type="select" data={this.getSearchData()} onSelect={selectPassengerCache} />
           <SimpleTitle title="" />
         </div>

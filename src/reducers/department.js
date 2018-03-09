@@ -8,7 +8,8 @@ const department = {
     {},
     {
       costCenter:{}, // cc
-      approver:{} //审批人
+      approver:{}, // 怡萱审批人
+      approverData: [] // 候选审批人列表
     },
     {
       projectInfoSimple:{}, // 项目item信息
@@ -42,9 +43,20 @@ function getUserInfo(state, action) {
   return {...state,costDepartmentData}
 }
 
+function getOtherDepartmentApprover(state, action) {
+  if(action.response.data && action.response.data.length > 0) {
+    const costDepartmentData = _.cloneDeep(state.costDepartmentData)
+    costDepartmentData[1].approverData = action.response.data
+    return {...state, costDepartmentData}
+  }else{
+    return state
+  }
+}
+
 export default caseReducer(department, {
   CHANGE_COST_DEPARTMENT: changeCostDepartment,
   CHANGE_TABS_INDEX: changeTabsIndex,
   SET_COST_DEPARTMENT_DATA: setCostDepartmentData,
   GET_USER_INFO_SUCCESS:getUserInfo,
+  GET_ORTHER_DEPARTMENT_APPROVER_SUCCESS:getOtherDepartmentApprover,
 })
