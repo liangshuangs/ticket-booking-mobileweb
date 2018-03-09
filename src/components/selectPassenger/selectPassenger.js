@@ -29,7 +29,7 @@ export default class Component extends React.Component {
     }
     const li = data.map((v,i)=>{
       return <li key={i}>
-        <img src={defaultuser}/>
+        <img src={v.avatar ? v.avatar : defaultuser}/>
         <div className="info">
           <span>{v.value}</span>
           <span>{v.label}</span>

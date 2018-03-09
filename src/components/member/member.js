@@ -19,7 +19,7 @@ export default class Component extends React.Component {
       return <li key={i}>
         <div className="avatar">
           <i>
-            <img src={defaultuser} />
+            <img src={v.avatar ? v.avatar : defaultuser} />
           </i>
         </div>
         <span className="username">{v.LAST_NAME}</span>

@@ -23,8 +23,13 @@ function getRecentPassenger(state, action) {
   return {...state,recentList:action.response.data}
 }
 
+function setRecentPassenger(state, action) {
+  return {...state,recentList:action.list}
+}
+
 export default caseReducer(passenger, {
   SELECT_PASSENGER: selectPassenger,
   DELETE_PASSENGER: deletePassenger,
   GET_RECENT_PASSENGER_SUCCESS:getRecentPassenger,
+  SET_RECENT_PASSENGER: setRecentPassenger,
 })

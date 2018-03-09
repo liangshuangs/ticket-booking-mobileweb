@@ -23,6 +23,12 @@ export const getRecentPassenger = (personId, pageNumber=1, pageSize=10) => ({
   },
 })
 
+// 设置最近乘机人头像
+export const setRecentPassenger = (list) =>({
+  type:'SET_RECENT_PASSENGER',
+  list
+})
+
 // 选择的乘机人数组
 export const selectPassenger = (selectList) => ({
   type: 'SELECT_PASSENGER',
@@ -33,4 +39,16 @@ export const selectPassenger = (selectList) => ({
 export const deletePassenger = (item) => ({
   type: 'DELETE_PASSENGER',
   item,
+})
+
+// 获取乘机人头像
+export const getPassengerAvatar = (staffCodes) => ({
+  [httpApi]: {
+    url: '/account/getAccountHeadIcons',
+    options: {
+      method: 'POST',
+      body: {staffCodes}
+    },
+    types: ['GET_PASSENGER_AVATAR_SUCCESS'],
+  },
 })

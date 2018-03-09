@@ -8,7 +8,7 @@ const department = {
     {},
     {
       costCenter:{}, // cc
-      approver:{}, // 怡萱审批人
+      approver:{}, // 已选审批人
       approverData: [] // 候选审批人列表
     },
     {
