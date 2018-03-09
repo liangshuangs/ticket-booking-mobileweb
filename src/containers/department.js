@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import Department from '../components/department/department'
 import { changeCostDepartment, changeTabsIndex, setCostDepartmentData, getOtherDepartmentApprover } from '../action/department'
-import { getProjectInfo } from '../action/project'
+import { getProjectInfo, getProjectApprover } from '../action/project'
 import tost from '../components/tost/tost'
 
 
@@ -18,6 +18,7 @@ const mapDispatchToProps = dispatch => (
     changeCostDepartment,
     changeTabsIndex,
     getProjectInfo,
+    getProjectApprover,
     setCostDepartmentData,
     getOtherDepartmentApprover,
   }, dispatch)
@@ -40,18 +41,46 @@ class Container extends React.Component {
 
   // 已经选择了项目卡2 和 项目item数据 接着获取详细数据
   getProjectInfoWillMount = () => {
-    const { department, getProjectInfo, userInfo, setCostDepartmentData } = this.props
+    const { department, getProjectInfo, getProjectApprover, userInfo, setCostDepartmentData } = this.props
     const {tabsIndex, costDepartmentData} = department
     const { projectInfoSimple, projectInfo } = costDepartmentData[2]
     if(tabsIndex === 2 && Object.keys(projectInfoSimple).length > 0 && Object.keys(projectInfo).length === 0) {
 
-      const {projectCode,projectType} = projectInfoSimple
+      const {projectId,projectCode,projectType} = projectInfoSimple
       const { personId:applyerId } = userInfo
+      const costDepartmentData2 = _.cloneDeep(costDepartmentData[2])
+      let infoIsFull = 0
+      // 先获取项目的详细信息
       getProjectInfo(projectCode,projectType,applyerId).then(res=>{
         if(res && res.response && res.response.result === '0000') {
-          const data = _.cloneDeep(costDepartmentData[2])
-          data.projectInfo = res.response.data[0]
-          setCostDepartmentData(2,data)
+          costDepartmentData2.projectInfo = res.response.data[0]
+          if(++infoIsFull === 2) {
+            // 保存 项目信息到 store
+            setCostDepartmentData(2,costDepartmentData2)
+          }
+        }else if(res && res.response && res.response.message){
+          tost(res.response.message)
+        }else{
+          tost('未能获取该项目的详细信息')
+        }
+      })
+      // 然后获取项目的审批人
+      getProjectApprover(projectId).then(res=>{
+        if(res && res.response && res.response.result === '0000') {
+          const {text:name, value:personId} = res.response.data[0]
+          if(name && personId) {
+            costDepartmentData2.approverInfo = {name,personId}
+            if(++infoIsFull === 2) {
+              // 保存 项目信息到 store
+              setCostDepartmentData(2,costDepartmentData2)
+            }
+          }else{
+            tost('审批人数据错误')
+          }
+        }else if(res && res.response && res.response.message){
+          tost(res.response.message)
+        }else{
+          tost('未能获取该项目的审批人')
         }
       })
     }
@@ -103,16 +132,28 @@ class Container extends React.Component {
   }
 
   updateCostDepartment = (tableIndex) => {
+    console.log('tableIndex',tableIndex)
     const {department} = this.props
     const { costDepartmentData } = department
-    const data = costDepartmentData[1]
-    if(Object.keys(data.costCenter).length === 0) {
+    const data = costDepartmentData[tableIndex]
+    console.log('data',data)
+    if(tableIndex === 1 && Object.keys(data.costCenter).length === 0) {
       tost('请选择成本中心')
       return
     }
 
-    if(Object.keys(data.approver).length === 0) {
+    if(tableIndex === 1 && Object.keys(data.approver).length === 0) {
       tost('请选择审批人')
+      return
+    }
+
+    if(tableIndex === 2 && Object.keys(data.projectInfo).length === 0) {
+      tost('请选择项目')
+      return
+    }
+
+    if(tableIndex === 2 && Object.keys(data.approverInfo).length === 0) {
+      tost('您选择的项目没有相关审批人')
       return
     }
 

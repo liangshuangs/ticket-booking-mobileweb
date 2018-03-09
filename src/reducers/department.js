@@ -11,8 +11,9 @@ const department = {
       approver:{} //审批人
     },
     {
-      projectInfoSimple:{},
-      projectInfo:{},
+      projectInfoSimple:{}, // 项目item信息
+      projectInfo:{}, // 项目详细信息
+      approverInfo: {}, // 项目审批人
     }
   ] // 费用部门数据
 }

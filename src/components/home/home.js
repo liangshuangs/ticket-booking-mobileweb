@@ -19,10 +19,13 @@ export default class Component extends React.Component {
         <Item key={1} type="info" label="CC(成本中心)：" value={costCenter.ccId} />,
         <Item key={2} type="info" label="审批人：" value={approver.text} />]
     }else{
+      const {projectInfoSimple,approverInfo} = costDepartmentData[2]
+
+      console.log('projectInfoSimple',projectInfoSimple)
       return[<Item key={0} type="check" label="费用部门：" value="项目结算" onClick={selectDepartment} />,
-      <Item key={1} type="info" label="项目编码：" value="123456" />,
-      <Item key={2} type="info" label="项目名称：" value="123456" />,
-      <Item key={3} type="info" label="审批人：" value="姚世琪" />]
+      <Item key={1} type="info" label="项目编码：" value={projectInfoSimple.projectCode} />,
+      <Item key={2} type="info" label="项目名称：" value={projectInfoSimple.projectName} />,
+      <Item key={3} type="info" label="审批人：" value={approverInfo.name} />]
     }
   }
 

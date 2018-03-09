@@ -64,7 +64,7 @@ export default class Component extends React.Component {
   getProjectPanel = () => {
     const { gotoProject, gotoRemark, department } = this.props
     const { costDepartmentData } = department
-    const { projectInfo, projectInfoSimple } = costDepartmentData[2]
+    const { projectInfo, projectInfoSimple, approverInfo } = costDepartmentData[2]
     if( Object.keys(projectInfo).length === 0) {
       return <div className="panel">
         <Item type="check" className="topborder" label="项目编码:" value="亚信中国" onClick={gotoProject} />
@@ -73,6 +73,7 @@ export default class Component extends React.Component {
     }else{
       const {companyId,projectCode,projectId,projectName,projectType,sbuId} = projectInfoSimple
       const {regionId, ccId} = projectInfo
+      const {name} = approverInfo
       return <div className="panel">
         <Item type="check" className="topborder" label="项目编码:" value={projectId} onClick={gotoProject} />
         <Item type="check" label="项目名称:" value={projectName} onClick={gotoProject} />
@@ -81,7 +82,7 @@ export default class Component extends React.Component {
         <Item type="info" label="Region(地区):" value={regionId} />
         <Item type="info" label="CC(成本中心):" value={ccId}  />
         <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
-        <Item type="info" label="审批人" value={4} />
+        <Item type="info" label="审批人" value={name} />
       </div>
     }
   }
