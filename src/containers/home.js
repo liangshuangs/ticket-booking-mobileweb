@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
   costDepartmentData: state.department.costDepartmentData,
   userInfo: state.user.info,
   selectPassengerList: state.passenger.selectList,
-  newApprover: state.approver.info,
+  approverInfo: state.approver.info,
 });
 
 const mapDispatchToProps = dispatch => (
@@ -56,34 +56,25 @@ class Container extends React.Component {
     // 获取当前的审批人
     // 去乘机人中对比
     // 更新审批人
-    const { costDepartment=0, userInfo={}, newApprover={}, selectPassengerList=[], getApprover, setApprover } = this.props
-    let thisApprover = {} // 当前审批人
-    if(Object.keys(newApprover).length > 0) {
-      // 如果已经重置过审批人 新的审批人优先
-      thisApprover = {...newApprover}
-    }else if(costDepartment === 0) {
-      // 如果是本部门
-      const { parentStaffId, sbuId, costCenter } = userInfo
-      thisApprover.presonId = parentStaffId
-      thisApprover.sbuId = sbuId
-      thisApprover.ccId = costCenter
-    }else if(costDepartment === 1){
-
-    }else{
-      // 2
-
+    const { costDepartment=0, userInfo={}, approverInfo={}, selectPassengerList=[], getApprover, setApprover } = this.props
+    if(Object.keys(approverInfo).length === 0) {
+      // 默认没有设置审批人 取 userInfo 的信息设置 为默认的审批人
+      const {parentStaffName:name, parentStaffId:personId, costCenter:ccId, sbuId} = userInfo
+      console.log('默认审批人')
+      setApprover({name,personId,ccId,sbuId}) // 默认审批人
+      return
     }
 
     // 开始对比
-    if(_.findIndex(selectPassengerList,['PERSON_ID',thisApprover.presonId]) !== -1) {
+    if(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.presonId]) !== -1) {
       //  如果审批人 在 乘机人 中
       // 先获取
-      getApprover(thisApprover.presonId,thisApprover.sbuId,thisApprover.ccId).then(res=>{
+      getApprover(approverInfo.presonId,approverInfo.sbuId,approverInfo.ccId).then(res=>{
         if(res && res.response && res.response.result === '0000') {
           const { text:name, value:presonId } = res.response.data[0]
           console.log(res.response.data[0])
-          // 更新审批人
-          setApprover({name,presonId,sbuId:thisApprover.sbuId,ccId:thisApprover.ccId})
+          // 更新审批人 ccId sbuId 不变
+          setApprover({name,presonId,sbuId:approverInfo.sbuId,ccId:approverInfo.ccId})
         }
       })
     }

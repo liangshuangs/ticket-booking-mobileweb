@@ -5,6 +5,7 @@ import _ from 'lodash'
 import Department from '../components/department/department'
 import { changeCostDepartment, changeTabsIndex, setCostDepartmentData, getOtherDepartmentApprover } from '../action/department'
 import { getProjectInfo, getProjectApprover } from '../action/project'
+import { setApprover } from '../action/approver'
 import tost from '../components/tost/tost'
 
 
@@ -21,6 +22,7 @@ const mapDispatchToProps = dispatch => (
     getProjectApprover,
     setCostDepartmentData,
     getOtherDepartmentApprover,
+    setApprover,
   }, dispatch)
 );
 
@@ -129,11 +131,13 @@ class Container extends React.Component {
     this.props.history.push('/remark')
   }
 
+  // 更新审批部门
   updateCostDepartment = (tableIndex) => {
     console.log('tableIndex',tableIndex)
     const {department} = this.props
     const { costDepartmentData } = department
     const data = costDepartmentData[tableIndex]
+    let approver = {}
     console.log('data',data)
     if(tableIndex === 1 && Object.keys(data.costCenter).length === 0) {
       tost('请选择成本中心')
@@ -154,6 +158,23 @@ class Container extends React.Component {
       tost('您选择的项目没有相关审批人')
       return
     }
+
+    // 更新审批人的副本（三个项目部门的初始数据分别保存在各自的数组中，为了方便操作审批人，所以审批人单独保存一个副本）
+    if(tableIndex === 0) {
+      const {parentStaffName:name, parentStaffId:personId, costCenter:ccId, sbuId} = data
+      approver = {name,personId,ccId,sbuId}
+    }else if(tableIndex ===1){
+      const {text:name, value:personId} = data.approver
+      const {ccId,sbuId} = data.costCenter
+      approver = {name,personId,ccId,sbuId}
+    }else{
+      const {name,personId} = data.approverInfo
+      const {sbuId} = data.projectInfoSimple
+      const {ccId} = data.projectInfo
+      approver = {name,personId,ccId,sbuId}
+    }
+    // 更新审批人的副本
+    this.props.setApprover(approver)
 
     this.props.changeCostDepartment(tableIndex) // 确定费用部门后 保存部门ID
 
