@@ -59,6 +59,7 @@ function getToken() {
   window.kara.getToken({
     success: function(result) {
       sessionStorage.token = result.token
+      loader()
     }
   })
 }

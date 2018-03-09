@@ -67,6 +67,11 @@ class Container extends React.Component {
       thisApprover.presonId = parentStaffId
       thisApprover.sbuId = sbuId
       thisApprover.ccId = costCenter
+    }else if(costDepartment === 1){
+
+    }else{
+      // 2
+
     }
 
     // 开始对比
