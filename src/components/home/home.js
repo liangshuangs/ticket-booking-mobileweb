@@ -30,7 +30,7 @@ export default class Component extends React.Component {
   }
 
   render() {
-    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger } = this.props
+    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit } = this.props
     const { accountName } = userInfo
 
     return (
@@ -43,7 +43,7 @@ export default class Component extends React.Component {
             <Member selectPassenger={selectPassenger} deletePassenger={deletePassenger} selectPassengerList={selectPassengerList} />
             {this.getItem()}
           </div>
-          <Footer hint/>
+          <Footer hint onClick={()=>{submit()}} />
         </div>
       </div>
     );
