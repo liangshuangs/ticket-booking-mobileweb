@@ -4,11 +4,13 @@ import caseReducer from './caseReducer'
 const passenger = {
   selectList:[], // 已经选择
   recentList:[], //最近
+  defalutIsSet: false, // 是否设置过默认乘机人
 }
 
 function selectPassenger(state, action) {
   const selectList = state.selectList.concat(action.selectList)
-  return {...state, selectList}
+  const defaultIsSet = !!action.isDefault
+  return {...state, selectList, defaultIsSet}
 }
 
 function deletePassenger(state, action) {

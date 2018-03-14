@@ -3,6 +3,7 @@ import Header from '../header/header'
 import Item from '../item/item'
 import Member from '../member/member'
 import Footer from '../footer/footer'
+import Modal from '../modal/modal'
 
 export default class Component extends React.Component {
 
@@ -30,7 +31,7 @@ export default class Component extends React.Component {
   }
 
   render() {
-    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit, leftClick } = this.props
+    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit, leftClick, noDeafultPassenger } = this.props
     const { accountName } = userInfo
 
     return (
@@ -45,6 +46,9 @@ export default class Component extends React.Component {
           </div>
           <Footer hint onClick={()=>{submit()}} />
         </div>
+        {noDeafultPassenger ? <Modal className="msg">
+          <p className="modal-msg">当前帐号尚无机票预订权限</p>
+        </Modal> : null }
       </div>
     );
   }

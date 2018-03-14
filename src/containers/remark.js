@@ -2,14 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Remark from '../components/remark/remark'
+import { setRemark } from "../action/remark"
 
 
 const mapStateToProps = state => ({
-
+  remark: state.remark,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
+    setRemark,
   }, dispatch)
 );
 

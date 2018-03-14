@@ -12,6 +12,7 @@ import tost from '../components/tost/tost'
 const mapStateToProps = state => ({
   department: state.department,
   userInfo: state.user.info,
+  remark: state.remark,
 });
 
 const mapDispatchToProps = dispatch => (

@@ -10,4 +10,35 @@
 		height: 100%;
 		background-color: rgba(0, 0, 0, 0.5);
 	}
+	.modal-msg {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		height: 40px;
+		margin-top: -20px;
+		text-align: center;
+		color: #fff;
+	}
+}
+
+.modal.msg {
+	top: 49PX;
+	.content {
+		height: calc(100% - 49PX);
+	}
+}
+
+.ios .modal.msg {
+	top: 67PX;
+	.content {
+		height: calc(100% - 67PX);
+	}
+}
+
+.iosx .modal.msg {
+	top: 89PX;
+	.content {
+		height: calc(100% - 89PX);
+	}
 }

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import Home from '../components/home/home'
 import { changeTabsIndex } from '../action/department'
-import { deletePassenger } from '../action/passenger'
+import { deletePassenger, getPassenger, selectPassenger } from '../action/passenger'
 import { getApprover, setApprover } from '../action/approver'
 import { submitVoucher } from '../action/home'
 import tost from '../components/tost/tost'
@@ -15,13 +15,17 @@ const mapStateToProps = state => ({
   costDepartmentData: state.department.costDepartmentData,
   userInfo: state.user.info,
   selectPassengerList: state.passenger.selectList,
+  defaultPassengerIsSet: state.passenger.defaultIsSet,
   approverInfo: state.approver.info,
+  remark: state.remark,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     changeTabsIndex,
     deletePassenger,
+    getPassenger,
+    selectPassenger,
     getApprover,
     setApprover,
     submitVoucher,
@@ -33,17 +37,35 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      noDeafultPassenger: false
     }
   }
 
   componentWillMount(){
-    const { changeTabsIndex, costDepartment=0 } = this.props
+    const { changeTabsIndex, costDepartment=0, defaultPassengerIsSet } = this.props
     changeTabsIndex(costDepartment) // 重置 tabsIndex
     this.resetApprover() // 尝试 重置 审批人
+    if(!defaultPassengerIsSet){
+      // 没有设置过默认乘机人
+      // 使用当前用户nt搜索乘机人 如果有设计为默认乘机人 如果没有 提示 “当前帐号尚无机票预订权限”
+      this.getDefaultPassenger()
+    }
   }
 
   componentWillReceiveProps(){
     this.resetApprover() // 尝试 重置 审批人
+  }
+
+  // 获取默认乘机人
+  getDefaultPassenger = () => {
+    const { userInfo, getPassenger, selectPassenger } = this.props
+    getPassenger(userInfo.staffAccount, userInfo.bgId).then(res=>{
+      if(res && res.response && res.response.result === '0000' && res.response.data && res.response.data.length > 0) {
+        selectPassenger({...res.response.data[0],avatar: userInfo.headIcon}, true) // 把该用户设置为默认乘客
+      }else{
+        this.setState({noDeafultPassenger: true})
+      }
+    })
   }
 
   // 关闭当前窗口
@@ -97,7 +119,7 @@ class Container extends React.Component {
 
   submit = () => {
     // 提交参数
-    const { submitVoucher, costDepartment=0, selectPassengerList, userInfo, costDepartmentData, approverInfo } = this.props
+    const { submitVoucher, costDepartment=0, selectPassengerList, userInfo, costDepartmentData, approverInfo, remark } = this.props
 
     console.log(this.props)
 
@@ -119,6 +141,7 @@ class Container extends React.Component {
     b.iscompany = costDepartment === 1 ? '1' : '0' // 是否跨部门
     b.expense_category_id = '6182cda2-f4d1-4c13-8533-0f2b666d9541' // 费用类型
     b.passengers = p // 乘机人集合
+    b.request_origin = '4' // 单据来源
 
     b.person_id = userInfo.personId // 代理人
     b.last_name = userInfo.staffName // 员工名称代理人
@@ -149,44 +172,45 @@ class Container extends React.Component {
       b.over_supervisor_person_id = approverInfo.personId // 夸部门审批人(personid)
     }else if(costDepartment === 2) {
       // 项目
-      b.company_id = costDepartmentData[3].projectInfo.companyId
-      b.company_name = costDepartmentData[3].projectInfo.companyName
-      b.sbu_id = costDepartmentData[3].projectInfo.sbuId
-      b.costcenter_id = costDepartmentData[3].projectInfo.ccId
-      b.region_id = costDepartmentData[3].projectInfo.regionId
-      b.region_name = costDepartmentData[3].projectInfo.regionName
+      const i = costDepartmentData[2].projectInfo
+      const is = costDepartmentData[2].projectInfoSimple
+      b.company_id = i.companyId
+      b.company_name = i.companyName
+      b.sbu_id = i.sbuId
+      b.costcenter_id = i.ccId
+      b.region_id = i.regionId
+      b.region_name = i.regionName
       // owner
-      b.hasfixeddepartment = costDepartmentData[3].projectInfo.glHasFixedDepartment //GL项目是否有指定的部门 1指定的 0 未指定
-      b.project_id = costDepartmentData[3].projectInfoSimple.projectId // 项目ID
-      b.project_code = costDepartmentData[3].projectInfoSimple.projectCode // 项目编号
+      b.hasfixeddepartment = i.glHasFixedDepartment //GL项目是否有指定的部门 1指定的 0 未指定
+      b.project_id = is.projectId // 项目ID
+      b.project_code = is.projectCode // 项目编号
+      b.isglProject = is.projectType === '-1' ? '1' : '0' // 是否是gl项目
+
+      b.task_number = i.taskNumberData[0].text.split('--')[0] // 任务号
+      b.task_id = i.taskNumberData[0].value // 任务ID
+
+      b.travel_purpose = remark.text // 其他
+
     }else{
       tost('费用部门选择有误')
       return
     }
 
-    //b.task_id = 1 // 任务ID
-    b.task_number = 1 // 任务号
+    submitVoucher(b).then(res=>{
+      if(res && res.response && res.response.result === '0000') {
 
-    b.travel_purpose =1 // 其他
-
-    b.isglProject = 1 // 是否是gl项目
-
-    b.request_origin = '4' // 单据来源
-
-
-
-    console.log(b)
-
-    submitVoucher(b)
+      }else{
+        tost(res.response.message || '提交出差')
+      }
+    })
 
   }
 
   render() {
 
     const { selectPassenger, selectDepartment, submit, leftClick } = this
-
-    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick}
-
+    const { noDeafultPassenger } = this.state
+    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, noDeafultPassenger}
     return (<Home {...props} />)
   }
 }

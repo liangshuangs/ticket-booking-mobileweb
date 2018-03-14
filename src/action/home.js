@@ -11,17 +11,11 @@ export const getUserInfo = () => ({
 })
 
 export const submitVoucher = (body) => {
-  let p = ''
-  for(let i in body) {
-    p+=`&${i}=${body[i]}`
-  }
-  console.log(`/aitos/pagego?function=SubmitVoucher${p}`)
   return {
     [httpApi]: {
-      url: `/aitos/pagego?function=SubmitVoucher`,
+      url: `/aitos/pagego?function=SubmitVoucher&json=${JSON.stringify(body)}`,
       options: {
         method: 'POST',
-        body,
       },
       types: ['GET_ORTHER_DEPARTMENT_APPROVER_SUCCESS'],
     },

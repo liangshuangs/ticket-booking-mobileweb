@@ -29,10 +29,11 @@ export const setRecentPassenger = (list) =>({
   list
 })
 
-// 选择的乘机人数组
-export const selectPassenger = (selectList) => ({
+// 选择的乘机人数组 / 设置默认乘机人
+export const selectPassenger = (selectList,isDefault) => ({
   type: 'SELECT_PASSENGER',
   selectList,
+  isDefault,
 })
 
 // 删除一个乘机人

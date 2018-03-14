@@ -8,6 +8,9 @@ export default class Modal extends Component {
     super(props)
     this.modal = document.createElement('div')
     this.modal.classList.add('modal')
+    if(props.className) {
+      this.modal.classList.add(props.className)
+    }
     document.body.appendChild(this.modal)
   }
 
