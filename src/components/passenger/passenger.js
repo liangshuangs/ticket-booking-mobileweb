@@ -57,13 +57,15 @@ export default class Component extends React.Component {
     return (
       <div className="wrap index clearfix">
         <Header title="选择乘机人" left="取消" right="完成" leftClick={historyBack} rightClick={selectPassengerConfirm} />
-        <div className="main scroll">
+        <div className="main flexsearch">
           <Search placeholder="输入姓名／NT账号／手机号"  onChange={this.onChange} />
-          {selectedPassengerData.length === 0 ? null : <SimpleTitle title="已选择" />}
-          <SelectPassenger type="delete" data={selectedPassengerData} onDelete={deletePassengerCache} />
-          {searchPassengerData.length === 0 ? null : <SimpleTitle title={`${isSearch ? '搜索结果' : '常用乘机人'}`} /> }
-          <SelectPassenger type="select" data={searchPassengerData} onSelect={selectPassengerCache} />
-          <SimpleTitle title="" />
+          <div className="body scroll">
+            {selectedPassengerData.length === 0 ? null : <SimpleTitle title="已选择" />}
+            <SelectPassenger type="delete" data={selectedPassengerData} onDelete={deletePassengerCache} />
+            {searchPassengerData.length === 0 ? null : <SimpleTitle title={`${isSearch ? '搜索结果' : '常用乘机人'}`} /> }
+            <SelectPassenger type="select" data={searchPassengerData} onSelect={selectPassengerCache} />
+            <SimpleTitle title="" />
+          </div>
         </div>
       </div>
     );

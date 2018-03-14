@@ -30,14 +30,14 @@ export default class Component extends React.Component {
   }
 
   render() {
-    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit } = this.props
+    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit, leftClick } = this.props
     const { accountName } = userInfo
 
     return (
       <div className="wrap index clearfix">
-        <Header title="机票预订信息单" left="icon-return" right="icon-record" />
+        <Header title="机票预订信息单" left="icon-return" right="icon-record" leftClick={leftClick} />
         <div className="main">
-          <div className="body scroll">
+          <div className="body scroll f-bt">
             <Item type="info" label="申请人" value={accountName} />
             <Item className="noborder" type="check" label="乘机人：" value="选择乘机人" onClick={selectPassenger} />
             <Member selectPassenger={selectPassenger} deletePassenger={deletePassenger} selectPassengerList={selectPassengerList} />

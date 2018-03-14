@@ -63,7 +63,7 @@ a {
 .iosx .wrap {
   padding-top: 99PX;
 }
-
+/*main normal flexfooter*/
 .main {
   position: relative;
   height: 100%;
@@ -71,9 +71,19 @@ a {
   background-color: #fff;
 }
 
+.main.flexsearch {
+  padding-top: 112px;
+  padding-bottom: 0;
+  background-color: transparent;
+}
+
+.main.scroll {
+  padding-bottom: 0;
+  background-color: transparent;
+}
+
 .body {
   height: 100%;
-  border-top: 1PX solid #dcdcdc;
 }
 
 .scroll {
@@ -81,7 +91,6 @@ a {
   overflow-y: auto;
 }
 
-.main.scroll {
-  padding-bottom: 0;
-  background-color: transparent;
+.f-bt {
+  border-top: 1PX solid #dcdcdc;
 }

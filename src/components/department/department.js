@@ -90,11 +90,11 @@ export default class Component extends React.Component {
 
 
   render() {
-    const { department={}, historyBack, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal, selectOtherDepartmentApprover } = this.props
+    const { department={}, gotoHome, updateCostDepartment, changeTabsIndex, approverModalShow, toggleApproverModal, selectOtherDepartmentApprover } = this.props
     const { costDepartment=0, tabsIndex=0 } = department
     return (
       <div className="wrap index clearfix">
-        <Header title="选择费用部门" left="icon-return" leftClick={historyBack} />
+        <Header title="选择费用部门" left="icon-return" leftClick={gotoHome} />
         <div className="main">
           <div className="body scroll department">
             <h2>费用部门</h2>

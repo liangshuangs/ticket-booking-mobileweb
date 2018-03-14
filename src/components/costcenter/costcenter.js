@@ -41,11 +41,13 @@ export default class Component extends React.Component {
     return (
       <div className="wrap index clearfix">
         <Header title="成本中心查询" left="取消" right="完成" leftClick={historyBack} rightClick={confirmCostCenter} />
-        <div className="main scroll">
+        <div className="main flexsearch">
           <Search placeholder="成本中心编码" onChange={this.onChange} />
-          {selectData.length === 0 ? null : <SimpleTitle title={this.searchType === undefined ? '最近订票的成本中心编码' : '搜索结果'}/>}
-          <SelectItem data={selectData} onSelect={this.onSelect} selectKey={key} />
-          <SimpleTitle title="" />
+          <div className="body scroll">
+            {selectData.length === 0 ? null : <SimpleTitle title={this.searchType === undefined ? '最近订票的成本中心编码' : '搜索结果'}/>}
+            <SelectItem data={selectData} onSelect={this.onSelect} selectKey={key} />
+            <SimpleTitle title="" />
+          </div>
         </div>
       </div>
     );

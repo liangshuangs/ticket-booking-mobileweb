@@ -115,8 +115,8 @@ class Container extends React.Component {
   }
 
 
-  historyBack = () => {
-    this.props.history.goBack()
+  gotoHome = () => {
+    this.props.history.push('/')
   }
 
   gotoCostcenter = () => {
@@ -188,9 +188,9 @@ class Container extends React.Component {
   }
 
   render() {
-    const { historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, selectOtherDepartmentApprover } = this
+    const { gotoHome, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, selectOtherDepartmentApprover } = this
     const { approverModalShow } = this.state
-    const props = {...this.props, historyBack, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow, selectOtherDepartmentApprover}
+    const props = {...this.props, gotoHome, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow, selectOtherDepartmentApprover}
 
     return (<Department {...props} />)
   }

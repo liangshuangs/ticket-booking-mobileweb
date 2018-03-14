@@ -46,6 +46,17 @@ class Container extends React.Component {
     this.resetApprover() // 尝试 重置 审批人
   }
 
+  // 关闭当前窗口
+  leftClick = () => {
+    if(window.kara) {
+      window.kara.closePage()
+    }else{
+      document.addEventListener('JSSDKReady', function(){
+        window.kara.closePage()
+      }, false);
+    }
+  }
+
   selectPassenger = () => {
     this.props.history.push('/passenger')
   }
@@ -172,9 +183,9 @@ class Container extends React.Component {
 
   render() {
 
-    const { selectPassenger, selectDepartment, submit } = this
+    const { selectPassenger, selectDepartment, submit, leftClick } = this
 
-    const props = {...this.props, selectPassenger, selectDepartment, submit}
+    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick}
 
     return (<Home {...props} />)
   }
