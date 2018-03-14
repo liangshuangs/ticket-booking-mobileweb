@@ -196,6 +196,8 @@ class Container extends React.Component {
       return
     }
 
+    console.log(b,JSON.stringify(b))
+
     submitVoucher(b).then(res=>{
       if(res && res.response && res.response.result === '0000') {
 
