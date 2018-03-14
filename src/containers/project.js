@@ -3,18 +3,20 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import Project from '../components/project/project'
-import { getProject } from '../action/project'
+import { getProject, getProjectRecent } from '../action/project'
 import { setCostDepartmentData } from '../action/department'
 import tost from "../components/tost/tost"
 
 
 const mapStateToProps = state => ({
-  costDepartmentData: state.department.costDepartmentData
+  costDepartmentData: state.department.costDepartmentData,
+  userInfo: state.user.info,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     getProject,
+    getProjectRecent,
     setCostDepartmentData,
   }, dispatch)
 );
@@ -30,6 +32,7 @@ class Container extends React.Component {
   }
 
   componentWillMount(){
+    this.getProjectRecentCall()
   }
 
   historyBack = () => {
@@ -40,6 +43,16 @@ class Container extends React.Component {
     const { getProject } = this.props
     getProject(value).then(res=>{
       if(res && res.response && res.response.result === '0000') {
+        this.setState({projectInfoList:res.response.data})
+      }
+    })
+  }
+
+  getProjectRecentCall = () => {
+    const { getProjectRecent, userInfo } = this.props
+    getProjectRecent(userInfo.personId).then(res=>{
+      // TODO 0000
+      if(res && res.response && res.response.result) {
         this.setState({projectInfoList:res.response.data})
       }
     })
@@ -74,11 +87,11 @@ class Container extends React.Component {
 
   render() {
 
-    const { historyBack, getProjectCall, selectProjectInfo, confirmProjectInfo } = this
+    const { historyBack, getProjectCall, getProjectRecentCall, selectProjectInfo, confirmProjectInfo } = this
 
     const { projectInfoList, selectProjectInfoData } = this.state
 
-    const props = {...this.props, historyBack, getProjectCall, projectInfoList, selectProjectInfo, selectProjectInfoData, confirmProjectInfo}
+    const props = {...this.props, historyBack, getProjectCall, getProjectRecentCall, projectInfoList, selectProjectInfo, selectProjectInfoData, confirmProjectInfo}
 
     return (<Project {...props} />)
   }

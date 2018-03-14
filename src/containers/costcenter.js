@@ -3,18 +3,20 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import Costcenter from '../components/costcenter/costcenter'
-import { getCostCenter } from '../action/costcenter'
+import { getCostCenter, getCostCenterRecent } from '../action/costcenter'
 import { setCostDepartmentData } from '../action/department'
 import tost from '../components/tost/tost'
 
 
 const mapStateToProps = state => ({
-  costDepartmentData: state.department.costDepartmentData
+  costDepartmentData: state.department.costDepartmentData,
+  userInfo: state.user.info,
 });
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     getCostCenter,
+    getCostCenterRecent,
     setCostDepartmentData,
   }, dispatch)
 );
@@ -30,6 +32,7 @@ class Container extends React.Component {
   }
 
   componentWillMount(){
+    this.getCostCenterRecentCall()
   }
 
   historyBack = () => {
@@ -40,6 +43,16 @@ class Container extends React.Component {
     const {getCostCenter} = this.props
     getCostCenter(value).then(res=>{
       if(res && res.response && res.response.result === '0000') {
+        this.setState({costCenterList:res.response.data})
+      }
+    })
+  }
+
+  getCostCenterRecentCall = () => {
+    const { getCostCenterRecent, userInfo } = this.props
+    getCostCenterRecent(userInfo.personId).then(res=>{
+      // TODO 0000
+      if(res && res.response && res.response.result) {
         this.setState({costCenterList:res.response.data})
       }
     })
@@ -74,10 +87,10 @@ class Container extends React.Component {
 
   render() {
 
-    const { historyBack, confirmCostCenter, getCostCenterCall, selectCostCenter } = this
+    const { historyBack, confirmCostCenter, getCostCenterCall, getCostCenterRecentCall, selectCostCenter } = this
     const { costCenterList, selectCostCenterData } = this.state
 
-    const props = {...this.props, historyBack, confirmCostCenter, getCostCenterCall, costCenterList, selectCostCenter, selectCostCenterData }
+    const props = {...this.props, historyBack, confirmCostCenter, getCostCenterCall, getCostCenterRecentCall, costCenterList, selectCostCenter, selectCostCenterData }
 
     return (<Costcenter {...props} />)
   }

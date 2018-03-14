@@ -46,7 +46,7 @@ export default class Component extends React.Component {
     console.log('costDepartmentData[1]',costDepartmentData[1])
     if( Object.keys(costCenter).length === 0) {
       return <div className="panel">
-        <Item type="check" className="topborder" label="CC(成本中心):" value="亚信中国" onClick={gotoCostcenter} />
+        <Item type="check" className="topborder" label="CC(成本中心):" value="选择成本中心" onClick={gotoCostcenter} />
         <Item type="check" label="跨部门审批人:" value="选择审批人" onClick={()=>{toggleApproverModal()}} />
       </div>
     }else{
@@ -68,7 +68,7 @@ export default class Component extends React.Component {
     const { projectInfo, projectInfoSimple, approverInfo } = costDepartmentData[2]
     if( Object.keys(projectInfo).length === 0) {
       return <div className="panel">
-        <Item type="check" className="topborder" label="项目编码:" value="亚信中国" onClick={gotoProject} />
+        <Item type="check" className="topborder" label="项目编码:" value="选择项目" onClick={gotoProject} />
         <Item type="info" label="其他:" value="请输入备注" onClick={gotoRemark} />
       </div>
     }else{

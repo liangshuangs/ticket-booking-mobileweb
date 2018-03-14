@@ -11,6 +11,17 @@ export const getProject = (kw, pageNumber=1, pageSize=10) => ({
   },
 })
 
+// 最近获取项目列
+export const getProjectRecent = (personId, pageNumber=1, pageSize=10) => ({
+  [httpApi]: {
+    url: `/aitos/pagego?function=GetRecentProject&personId=${personId}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    options: {
+      method: 'POST'
+    },
+    types: ['GET_PROJECT_RECENT'],
+  },
+})
+
 // 获取项目详细信息
 export const getProjectInfo = (projectCode,projectType,applyerId,isGetClosedProject=0,voucherTypeId='8C6A6C37-7907-163A-AE04-40003BA782B9') => ({
   [httpApi]: {

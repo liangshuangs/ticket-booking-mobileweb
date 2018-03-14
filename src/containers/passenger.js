@@ -37,9 +37,7 @@ class Container extends React.Component {
   componentWillMount(){
     const { userInfo, getRecentPassenger } = this.props
     // 获取近期乘机人
-    //getRecentPassenger(userInfo.personId)
-    // TODO
-    getRecentPassenger('67502').then(res=>{
+    getRecentPassenger(userInfo.personId).then(res=>{
       if(res && res.response && res.response.result === '0000' && res.response.data && res.response.data.length > 0) {
         // 获取头像
         this.getPassengerAvatarCall(res.response.data,this.changeRecentPassengerAvatar)
