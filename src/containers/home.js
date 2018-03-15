@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
+import md5 from 'md5'
 import Home from '../components/home/home'
 import { changeTabsIndex } from '../action/department'
 import { deletePassenger, getPassenger, selectPassenger } from '../action/passenger'
@@ -79,6 +80,50 @@ class Container extends React.Component {
     }
   }
 
+  getYMDHMS = (d) => {
+    const Y = d.getFullYear()
+      ,M = this.get0(d.getMonth() +1)
+      ,D = this.get0(d.getDate())
+      ,H = this.get0(d.getHours())
+      ,Ms = this.get0(d.getMinutes())
+      ,S = this.get0(d.getSeconds())
+    return `${Y}${M}${D}${H}${Ms}${S}`
+  }
+  get0 = (d) => {
+    return d < 10 ? `0${d}` : d
+  }
+
+  // 跳转到宝库 查看 订单列表
+  gotoBaoku = () => {
+    // TODO
+    const {personId} = this.props.userInfo
+    const timestamp = this.getYMDHMS(new Date())
+    const bkcid = '49003'
+    const emnum = personId
+    const direction = 'H5'
+    const homePage='airorder'
+    const salt = '946fd49ecf29691e97446af73e0ae98a'
+    const sign = md5(`${timestamp}${bkcid}${emnum}${direction}${homePage}${salt}`)
+    const bkurl = 'http://apics.baoku.com/open/api/login/oaLogin'
+    const url = `${bkurl}?timestamp=${timestamp}&bkcid=${bkcid}&emnum=${emnum}&sign=${sign}&direction=${direction}&homePage=${homePage}`
+    this.openNewWindow(url)
+  }
+
+  openNewWindow = (url) => {
+    //window.location.href = url
+    if(window.kara) {
+      window.kara.openURL({
+        url:url,
+      })
+    }else{
+      document.addEventListener('JSSDKReady', function(){
+        window.kara.openURL({
+          url:url,
+        })
+      }, false);
+    }
+  }
+
   selectPassenger = () => {
     this.props.history.push('/passenger')
   }
@@ -108,7 +153,6 @@ class Container extends React.Component {
       getApprover(approverInfo.presonId,approverInfo.sbuId,approverInfo.ccId).then(res=>{
         if(res && res.response && res.response.result === '0000') {
           const { text:name, value:presonId } = res.response.data[0]
-          console.log(res.response.data[0])
           // 更新审批人 ccId sbuId 不变
           setApprover({name,presonId,sbuId:approverInfo.sbuId,ccId:approverInfo.ccId})
         }
@@ -120,8 +164,6 @@ class Container extends React.Component {
   submit = () => {
     // 提交参数
     const { submitVoucher, costDepartment=0, selectPassengerList, userInfo, costDepartmentData, approverInfo, remark } = this.props
-
-    console.log(this.props)
 
     if(selectPassengerList.length === 0) {
       tost('请选择乘机人')
@@ -196,11 +238,19 @@ class Container extends React.Component {
       return
     }
 
-    console.log(b,JSON.stringify(b))
+    //console.log(b,JSON.stringify(b))
 
     submitVoucher(b).then(res=>{
-      if(res && res.response && res.response.result === '0000') {
-
+      if(res && res.response && res.response.result === '0000' && res.response.data) {
+        const o = res.response.data[0]
+        let url = `${o.bkurl}?`
+        for(let i in o) {
+          if(i !== 'bkurl' && i !== 'parameters') {
+            url = `${url}&${i}=${o[i]}`
+          }
+        }
+        console.log(o,url)
+        this.openNewWindow(url)
       }else{
         tost(res.response.message || '提交出差')
       }
@@ -210,9 +260,9 @@ class Container extends React.Component {
 
   render() {
 
-    const { selectPassenger, selectDepartment, submit, leftClick } = this
+    const { selectPassenger, selectDepartment, submit, leftClick, gotoBaoku } = this
     const { noDeafultPassenger } = this.state
-    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, noDeafultPassenger}
+    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger}
     return (<Home {...props} />)
   }
 }

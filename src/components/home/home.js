@@ -31,12 +31,12 @@ export default class Component extends React.Component {
   }
 
   render() {
-    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit, leftClick, noDeafultPassenger } = this.props
+    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit, leftClick, gotoBaoku, noDeafultPassenger } = this.props
     const { accountName } = userInfo
 
     return (
       <div className="wrap index clearfix">
-        <Header title="机票预订信息单" left="icon-return" right="icon-record" leftClick={leftClick} />
+        <Header title="机票预订信息单" left="icon-return" right="icon-record" leftClick={leftClick} rightClick={gotoBaoku} />
         <div className="main">
           <div className="body scroll f-bt">
             <Item type="info" label="申请人" value={accountName} />
