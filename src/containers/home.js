@@ -5,7 +5,7 @@ import _ from 'lodash'
 import md5 from 'md5'
 import Home from '../components/home/home'
 import { changeTabsIndex } from '../action/department'
-import { deletePassenger, getPassenger, selectPassenger } from '../action/passenger'
+import { deletePassenger, getPassenger, selectPassenger, setDefaultPassenger } from '../action/passenger'
 import { getApprover, setApprover } from '../action/approver'
 import { submitVoucher } from '../action/home'
 import tost from '../components/tost/tost'
@@ -27,6 +27,7 @@ const mapDispatchToProps = dispatch => (
     deletePassenger,
     getPassenger,
     selectPassenger,
+    setDefaultPassenger,
     getApprover,
     setApprover,
     submitVoucher,
@@ -46,6 +47,7 @@ class Container extends React.Component {
     const { changeTabsIndex, costDepartment=0, defaultPassengerIsSet } = this.props
     changeTabsIndex(costDepartment) // 重置 tabsIndex
     this.resetApprover() // 尝试 重置 审批人
+    console.log('defaultPassengerIsSet',defaultPassengerIsSet)
     if(!defaultPassengerIsSet){
       // 没有设置过默认乘机人
       // 使用当前用户nt搜索乘机人 如果有设计为默认乘机人 如果没有 提示 “当前帐号尚无机票预订权限”
@@ -59,10 +61,11 @@ class Container extends React.Component {
 
   // 获取默认乘机人
   getDefaultPassenger = () => {
-    const { userInfo, getPassenger, selectPassenger } = this.props
+    const { userInfo, getPassenger, selectPassenger, setDefaultPassenger } = this.props
     getPassenger(userInfo.staffAccount, userInfo.bgId).then(res=>{
       if(res && res.response && res.response.result === '0000' && res.response.data && res.response.data.length > 0) {
-        selectPassenger({...res.response.data[0],avatar: userInfo.headIcon}, true) // 把该用户设置为默认乘客
+        selectPassenger({...res.response.data[0],avatar: userInfo.headIcon}) // 把该用户设置为默认乘客
+        setDefaultPassenger()
       }else{
         this.setState({noDeafultPassenger: true})
       }
@@ -138,23 +141,27 @@ class Container extends React.Component {
     // 去乘机人中对比
     // 更新审批人
     const { costDepartment=0, userInfo={}, approverInfo={}, selectPassengerList=[], getApprover, setApprover } = this.props
+    console.log('尝试重置审批人',this.props)
     if(Object.keys(approverInfo).length === 0) {
       // 默认没有设置审批人 取 userInfo 的信息设置 为默认的审批人
       const {parentStaffName:name, parentStaffId:personId, costCenter:ccId, sbuId} = userInfo
-      console.log('默认审批人')
+      console.log('默认审批人',{name,personId,ccId,sbuId})
       setApprover({name,personId,ccId,sbuId}) // 默认审批人
       return
     }
 
+    console.log(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.personId]),approverInfo.personId)
+
     // 开始对比
-    if(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.presonId]) !== -1) {
+    if(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.personId]) !== -1) {
       //  如果审批人 在 乘机人 中
       // 先获取
-      getApprover(approverInfo.presonId,approverInfo.sbuId,approverInfo.ccId).then(res=>{
+      console.log('获取新的审批人')
+      getApprover(approverInfo.personId,approverInfo.sbuId,approverInfo.ccId).then(res=>{
         if(res && res.response && res.response.result === '0000') {
-          const { text:name, value:presonId } = res.response.data[0]
+          const { text:name, value:personId } = res.response.data[0]
           // 更新审批人 ccId sbuId 不变
-          setApprover({name,presonId,sbuId:approverInfo.sbuId,ccId:approverInfo.ccId})
+          setApprover({name,personId,sbuId:approverInfo.sbuId,ccId:approverInfo.ccId})
         }
       })
     }
@@ -249,10 +256,9 @@ class Container extends React.Component {
             url = `${url}&${i}=${o[i]}`
           }
         }
-        console.log(o,url)
-        this.openNewWindow(url)
+        this.openNewWindow(`${url}&hideNavigationBar=true`)
       }else{
-        tost(res.response.message || '提交出差')
+        tost(res.response.message || '提交出错')
       }
     })
 

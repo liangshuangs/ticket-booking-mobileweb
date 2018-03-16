@@ -9,8 +9,11 @@ const passenger = {
 
 function selectPassenger(state, action) {
   const selectList = state.selectList.concat(action.selectList)
-  const defaultIsSet = !!action.isDefault
-  return {...state, selectList, defaultIsSet}
+  return {...state, selectList}
+}
+
+function setDefaultPassenger(state) {
+  return {...state, defaultIsSet: true}
 }
 
 function deletePassenger(state, action) {
@@ -34,4 +37,5 @@ export default caseReducer(passenger, {
   DELETE_PASSENGER: deletePassenger,
   GET_RECENT_PASSENGER_SUCCESS:getRecentPassenger,
   SET_RECENT_PASSENGER: setRecentPassenger,
+  SET_DEFAULT_PASSENGER: setDefaultPassenger,
 })
