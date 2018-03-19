@@ -256,14 +256,15 @@ class Container extends React.Component {
     submitVoucher(b).then(res=>{
       if(res && res.response && res.response.result === '0000' && res.response.data) {
         const o = res.response.data[0]
-        let url = `${o.bkurl}?`
+        let url = `${o.bkurl}/?`
         for(let i in o) {
           if(i !== 'bkurl' && i !== 'parameters') {
             url = `${url}&${i}=${o[i]}`
           }
         }
         //this.openNewWindow(`${url}&hideNavigationBar=true`)
-        this.openIframe(url)
+        //this.openIframe(url)
+        this.openNewWindow(url)
       }else{
         tost(res.response.message || '提交出错')
       }
