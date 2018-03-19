@@ -131,6 +131,7 @@ class Container extends React.Component {
   // 打开iframe
   openIframe = (url) => {
     sessionStorage.baoku = url
+    console.log(sessionStorage.baoku)
     this.props.history.push('/baoku')
   }
 
