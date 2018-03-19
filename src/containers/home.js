@@ -112,8 +112,9 @@ class Container extends React.Component {
     this.openNewWindow(url)
   }
 
+  // 打开新的 webview
   openNewWindow = (url) => {
-    //window.location.href = url
+    window.location.href = url
     if(window.kara) {
       window.kara.openURL({
         url:url,
@@ -125,6 +126,12 @@ class Container extends React.Component {
         })
       }, false);
     }
+  }
+
+  // 打开iframe
+  openIframe = (url) => {
+    sessionStorage.baoku = url
+    this.props.history.push('/baoku')
   }
 
   selectPassenger = () => {
@@ -149,8 +156,6 @@ class Container extends React.Component {
       setApprover({name,personId,ccId,sbuId}) // 默认审批人
       return
     }
-
-    console.log(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.personId]),approverInfo.personId)
 
     // 开始对比
     if(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.personId]) !== -1) {
@@ -256,7 +261,8 @@ class Container extends React.Component {
             url = `${url}&${i}=${o[i]}`
           }
         }
-        this.openNewWindow(`${url}&hideNavigationBar=true`)
+        //this.openNewWindow(`${url}&hideNavigationBar=true`)
+        this.openIframe(url)
       }else{
         tost(res.response.message || '提交出错')
       }

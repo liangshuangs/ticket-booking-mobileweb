@@ -11,6 +11,7 @@ import Department from './department'
 import Costcenter from './costcenter'
 import Project from './project'
 import Remark from './remark'
+import Baoku from './baoku'
 import env from '../config/env'
 import { getUserInfo } from '../action/home'
 
@@ -54,6 +55,7 @@ class Container extends React.Component {
           <Route path="/costcenter" component={Costcenter} />
           <Route path="/project" component={Project} />
           <Route path="/remark" component={Remark} />
+          <Route path="/baoku" component={Baoku} />
         </Switch>
       </Router>)
   }
