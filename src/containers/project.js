@@ -39,14 +39,16 @@ class Container extends React.Component {
     this.props.history.goBack()
   }
 
-  getProjectCall = _.debounce((value) => {
+  getProjectCall = _.debounce((value,pageNumber=1) => {
     const { getProject } = this.props
     this.keywords = value // 保留最后一个搜索关键词
-    getProject(value).then(res=>{
+    this.pageNumber = pageNumber
+    getProject(value,this.pageNumber).then(res=>{
       if(res && res.response && res.response.result === '0000') {
         // 只拿取和最后一个关键词 匹配的搜索结果
         if(this.keywords === res.requestInformation.keywords) {
-          this.setState({projectInfoList:res.response.data})
+          const oldList = this.pageNumber > 1 ? this.state.projectInfoList : []
+          this.setState({projectInfoList:oldList.concat(res.response.data)})
         }
       }
     })
@@ -55,8 +57,7 @@ class Container extends React.Component {
   getProjectRecentCall = () => {
     const { getProjectRecent, userInfo } = this.props
     getProjectRecent(userInfo.personId).then(res=>{
-      // TODO 0000
-      if(res && res.response && res.response.result) {
+      if(res && res.response && res.response.result === '0000') {
         this.setState({projectInfoList:res.response.data})
       }
     })
@@ -88,14 +89,23 @@ class Container extends React.Component {
     history.push('/department')
   }
 
+  onScroll = (e) => {
+    const { scrollTop, offsetHeight, scrollHeight } = e.target
+    if(scrollTop+offsetHeight >= scrollHeight -10 && (scrollTop >= (this.scrollTop || 0))) {
+      // 接近地步 10个像素 并且向上滑动
+      this.scrollTop = scrollTop
+      this.getProjectCall(this.keywords, ++this.pageNumber)
+    }
+  }
+
 
   render() {
 
-    const { historyBack, getProjectCall, getProjectRecentCall, selectProjectInfo, confirmProjectInfo } = this
+    const { historyBack, getProjectCall, getProjectRecentCall, selectProjectInfo, confirmProjectInfo, onScroll } = this
 
     const { projectInfoList, selectProjectInfoData } = this.state
 
-    const props = {...this.props, historyBack, getProjectCall, getProjectRecentCall, projectInfoList, selectProjectInfo, selectProjectInfoData, confirmProjectInfo}
+    const props = {...this.props, historyBack, getProjectCall, getProjectRecentCall, projectInfoList, selectProjectInfo, selectProjectInfoData, confirmProjectInfo, onScroll}
 
     return (<Project {...props} />)
   }

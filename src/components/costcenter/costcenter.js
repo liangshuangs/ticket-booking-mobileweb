@@ -34,7 +34,7 @@ export default class Component extends React.Component {
 
 
   render() {
-    const { historyBack, confirmCostCenter, selectCostCenterData={} } = this.props
+    const { historyBack, confirmCostCenter, selectCostCenterData={}, onScroll } = this.props
     const {key=null} = selectCostCenterData
     const selectData = this.getItemData()
 
@@ -43,7 +43,7 @@ export default class Component extends React.Component {
         <Header title="成本中心查询" left="取消" right="完成" leftClick={historyBack} rightClick={confirmCostCenter} />
         <div className="main flexsearch">
           <Search placeholder="成本中心编码" onChange={this.onChange} />
-          <div className="body scroll">
+          <div className="body scroll" onScroll={onScroll}>
             {selectData.length === 0 ? null : <SimpleTitle title={this.searchType === undefined ? '最近订票的成本中心编码' : '搜索结果'}/>}
             <SelectItem data={selectData} onSelect={this.onSelect} selectKey={key} />
             <SimpleTitle title="" />

@@ -40,14 +40,16 @@ class Container extends React.Component {
   }
 
   // 搜索值不为空 执行的回掉
-  getCostCenterCall = _.debounce((value) => {
+  getCostCenterCall = _.debounce((value,pageNumber=1) => {
     const {getCostCenter} = this.props
     this.keywords = value // 保留最后一个搜索关键词
-    getCostCenter(value).then(res=>{
+    this.pageNumber = pageNumber
+    getCostCenter(value,this.pageNumber).then(res=>{
       if(res && res.response && res.response.result === '0000') {
         // 只拿取和最后一个关键词 匹配的搜索结果
         if(this.keywords === res.requestInformation.keywords) {
-          this.setState({costCenterList:res.response.data})
+          const oldList = this.pageNumber > 1 ? this.state.costCenterList : []
+          this.setState({costCenterList:oldList.concat(res.response.data)})
         }
       }
     })
@@ -88,13 +90,22 @@ class Container extends React.Component {
     history.push('/department')
   }
 
+  onScroll = (e) => {
+    const { scrollTop, offsetHeight, scrollHeight } = e.target
+    if(scrollTop+offsetHeight >= scrollHeight -10 && (scrollTop >= (this.scrollTop || 0))) {
+      // 接近地步 10个像素 并且向上滑动
+      this.scrollTop = scrollTop
+      this.getCostCenterCall(this.keywords, ++this.pageNumber)
+    }
+  }
+
 
   render() {
 
-    const { historyBack, confirmCostCenter, getCostCenterCall, getCostCenterRecentCall, selectCostCenter } = this
+    const { historyBack, confirmCostCenter, getCostCenterCall, getCostCenterRecentCall, selectCostCenter, onScroll } = this
     const { costCenterList, selectCostCenterData } = this.state
 
-    const props = {...this.props, historyBack, confirmCostCenter, getCostCenterCall, getCostCenterRecentCall, costCenterList, selectCostCenter, selectCostCenterData }
+    const props = {...this.props, historyBack, confirmCostCenter, getCostCenterCall, getCostCenterRecentCall, costCenterList, selectCostCenter, selectCostCenterData, onScroll }
 
     return (<Costcenter {...props} />)
   }

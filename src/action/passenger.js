@@ -2,7 +2,7 @@ import { httpApi } from '../http/http'
 
 
 // 获取乘机人列表
-export const getPassenger = (kw, bgId, isLike='1', pageNumber=1, pageSize=10) => ({
+export const getPassenger = (kw, bgId, pageNumber=1, pageSize=10, isLike=1) => ({
   [httpApi]: {
     url: `/aitos/pagego?function=GetPassengers&empName=${kw}&isLike=${isLike}&ntAccount=${kw}&tel=${kw}&bgId=${bgId}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
     options: {
