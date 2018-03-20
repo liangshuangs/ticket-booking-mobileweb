@@ -63,11 +63,12 @@ class Container extends React.Component {
   // 获取默认乘机人
   getDefaultPassenger = () => {
     const { userInfo, getPassenger, selectPassenger, setDefaultPassenger } = this.props
-    getPassenger(userInfo.staffAccount, userInfo.bgId).then(res=>{
+    getPassenger(userInfo.staffAccount, userInfo.bgId, '0').then(res=>{
       if(res && res.response && res.response.result === '0000' && res.response.data && res.response.data.length > 0) {
         selectPassenger({...res.response.data[0],avatar: userInfo.headIcon}) // 把该用户设置为默认乘客
-        setDefaultPassenger()
+        setDefaultPassenger() // 设置默认乘机人
       }else{
+        // 没有默认乘机人
         this.setState({noDeafultPassenger: true})
       }
     })
@@ -115,7 +116,7 @@ class Container extends React.Component {
 
   // 打开新的 webview
   openNewWindow = (url) => {
-    //window.location.href = url
+    window.location.href = url
     if(window.kara) {
       window.kara.openURL({
         url:url,
