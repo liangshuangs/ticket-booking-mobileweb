@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import md5 from 'md5'
+import { Base64 } from 'js-base64'
 import Home from '../components/home/home'
 import { changeTabsIndex } from '../action/department'
 import { deletePassenger, getPassenger, selectPassenger, setDefaultPassenger } from '../action/passenger'
@@ -114,7 +115,7 @@ class Container extends React.Component {
 
   // 打开新的 webview
   openNewWindow = (url) => {
-    window.location.href = url
+    //window.location.href = url
     if(window.kara) {
       window.kara.openURL({
         url:url,
@@ -262,9 +263,9 @@ class Container extends React.Component {
             url = `${url}&${i}=${o[i]}`
           }
         }
-        //this.openNewWindow(`${url}&hideNavigationBar=true`)
+        //this.openNewWindow(`http://xinbuluo-public.oss-cn-beijing.aliyuncs.com/iframe/index.html?url=${Base64.encodeURI(url)}&hideNavigationBar=true`)
         //this.openIframe(url)
-        this.openNewWindow(url)
+        this.openNewWindow(`${url}&hideNavigationBar=true`)
       }else{
         tost(res.response.message || '提交出错')
       }

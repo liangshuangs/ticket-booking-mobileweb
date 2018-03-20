@@ -9,6 +9,7 @@ export const getPassenger = (kw, bgId, pageNumber=1, pageSize=10) => ({
       method: 'POST'
     },
     types: ['GET_PASSENGER_SUCCESS'],
+    keywords:kw,
   },
 })
 

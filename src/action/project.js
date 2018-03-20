@@ -8,6 +8,7 @@ export const getProject = (kw, pageNumber=1, pageSize=10) => ({
       method: 'POST'
     },
     types: ['GET_PROJECT_SUCCESS', 'GET_PROJECT_REQUEST', 'GET_PROJECT_FAILURE', 'NETWORK_FAILURE'],
+    keywords:kw,
   },
 })
 

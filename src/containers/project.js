@@ -39,14 +39,18 @@ class Container extends React.Component {
     this.props.history.goBack()
   }
 
-  getProjectCall = (value) => {
+  getProjectCall = _.debounce((value) => {
     const { getProject } = this.props
+    this.keywords = value // 保留最后一个搜索关键词
     getProject(value).then(res=>{
       if(res && res.response && res.response.result === '0000') {
-        this.setState({projectInfoList:res.response.data})
+        // 只拿取和最后一个关键词 匹配的搜索结果
+        if(this.keywords === res.requestInformation.keywords) {
+          this.setState({projectInfoList:res.response.data})
+        }
       }
     })
-  }
+  },200)
 
   getProjectRecentCall = () => {
     const { getProjectRecent, userInfo } = this.props

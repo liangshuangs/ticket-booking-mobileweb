@@ -39,20 +39,24 @@ class Container extends React.Component {
     this.props.history.goBack()
   }
 
-  getCostCenterCall = (value) => {
+  // 搜索值不为空 执行的回掉
+  getCostCenterCall = _.debounce((value) => {
     const {getCostCenter} = this.props
+    this.keywords = value // 保留最后一个搜索关键词
     getCostCenter(value).then(res=>{
       if(res && res.response && res.response.result === '0000') {
-        this.setState({costCenterList:res.response.data})
+        // 只拿取和最后一个关键词 匹配的搜索结果
+        if(this.keywords === res.requestInformation.keywords) {
+          this.setState({costCenterList:res.response.data})
+        }
       }
     })
-  }
-
+  },200)
+  // 搜索值为空 执行的回掉
   getCostCenterRecentCall = () => {
     const { getCostCenterRecent, userInfo } = this.props
     getCostCenterRecent(userInfo.personId).then(res=>{
-      // TODO 0000
-      if(res && res.response && res.response.result) {
+      if(res && res.response && res.response.result === '0000') {
         this.setState({costCenterList:res.response.data})
       }
     })

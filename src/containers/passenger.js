@@ -85,10 +85,12 @@ class Container extends React.Component {
   }
 
   // 搜索乘机人
-  getPassengerCall = (value,bgId) => {
+  getPassengerCall = _.debounce((value,bgId) => {
+    this.keywords = value // 保留最后一个搜索关键词
     this.props.getPassenger(value,bgId).then(res=>{
       if(res && res.response && res.response.result === '0000' && res.response.data) {
-        if(res.response.data.length > 0){
+        if(res.response.data.length > 0 && this.keywords === res.requestInformation.keywords){
+          // 只拿取和最后一个关键词 匹配的搜索结果
           this.setState({passengerList:res.response.data})
           // 获取头像
           this.getPassengerAvatarCall(res.response.data,this.changeSearchPassengerAvatar)
@@ -104,7 +106,7 @@ class Container extends React.Component {
     }else{
       this.setState({isSearch: false})
     }
-  }
+  },200)
 
   // 选择乘机人 缓存
   selectPassengerCache = (item) => {
