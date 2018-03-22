@@ -116,7 +116,8 @@ class Container extends React.Component {
 
   // 打开新的 webview
   openNewWindow = (url) => {
-    window.location.href = url
+    // 测试
+    //window.location.href = url
     if(window.kara) {
       window.kara.openURL({
         url:url,
@@ -128,13 +129,6 @@ class Container extends React.Component {
         })
       }, false);
     }
-  }
-
-  // 打开iframe
-  openIframe = (url) => {
-    sessionStorage.baoku = url
-    console.log(sessionStorage.baoku)
-    this.props.history.push('/baoku')
   }
 
   selectPassenger = () => {
