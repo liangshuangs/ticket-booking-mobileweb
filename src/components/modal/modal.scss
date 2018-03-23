@@ -20,6 +20,59 @@
 		text-align: center;
 		color: #fff;
 	}
+	.modal-panel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      border-radius: 10px;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      .modal-body {
+        padding: 60px 60px 40px;
+        .modal-info {
+          margin: 0 0 30px 0;
+          line-height: 76px;
+        }
+        .modal-check {
+          height: 120px;
+          line-height: 120px;
+          color: #666;
+          cursor: pointer;
+          label {
+            margin-right: 10px;
+            .iconfont {
+              font-size: 16PX;
+            }
+            .icon-checkeds {
+              display: none;
+              color: #ff8928;
+            }
+          }
+        }
+        .modal-check.checkeds {
+          label {
+            .icon-check {
+              display: none;
+            }
+            .icon-checkeds {
+              display: inline;
+            }
+          }
+        }
+      }
+      .modal-footer {
+        height: 131px;
+        border-top: 1PX solid #e0e0e0;
+        a {
+          display: block;
+          text-align: center;
+          line-height: 130px;
+          color: #ff8928;
+          cursor: pointer;
+        }
+      }
+	}
 }
 
 .modal.msg {

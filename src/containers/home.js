@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import md5 from 'md5'
-import { Base64 } from 'js-base64'
+//import { Base64 } from 'js-base64'
 import Home from '../components/home/home'
 import { changeTabsIndex } from '../action/department'
 import { deletePassenger, getPassenger, selectPassenger, setDefaultPassenger } from '../action/passenger'
 import { getApprover, setApprover } from '../action/approver'
 import { submitVoucher } from '../action/home'
+import { doNotRemind, isRemind, getRemind, setRemind } from '../action/remind'
 import tost from '../components/tost/tost'
 
 
@@ -20,6 +21,8 @@ const mapStateToProps = state => ({
   defaultPassengerIsSet: state.passenger.defaultIsSet,
   approverInfo: state.approver.info,
   remark: state.remark,
+  remindIs:state.remind.is,
+  remindDoNot: state.remind.doNotRemind,
 });
 
 const mapDispatchToProps = dispatch => (
@@ -32,6 +35,10 @@ const mapDispatchToProps = dispatch => (
     getApprover,
     setApprover,
     submitVoucher,
+    doNotRemind,
+    isRemind,
+    getRemind,
+    setRemind,
   }, dispatch)
 );
 
@@ -40,7 +47,8 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      noDeafultPassenger: false
+      noDeafultPassenger: false,
+      isRemind: false,
     }
   }
 
@@ -48,12 +56,22 @@ class Container extends React.Component {
     const { changeTabsIndex, costDepartment=0, defaultPassengerIsSet } = this.props
     changeTabsIndex(costDepartment) // 重置 tabsIndex
     this.resetApprover() // 尝试 重置 审批人
-    console.log('defaultPassengerIsSet',defaultPassengerIsSet)
+    //console.log('defaultPassengerIsSet',defaultPassengerIsSet)
     if(!defaultPassengerIsSet){
       // 没有设置过默认乘机人
       // 使用当前用户nt搜索乘机人 如果有设计为默认乘机人 如果没有 提示 “当前帐号尚无机票预订权限”
       this.getDefaultPassenger()
     }
+  }
+
+  componentDidMount() {
+    const {remindDoNot, isRemind, getRemind, userInfo} = this.props
+    getRemind(userInfo.personId).then(res=>{
+      if(!remindDoNot && res && res.response && res.response.result === '0000' && res.response.isRemind === 0) {
+        // 已经点击确定按钮 防止路由返回 不要多次提醒
+        isRemind(true)
+      }
+    })
   }
 
   componentWillReceiveProps(){
@@ -116,8 +134,9 @@ class Container extends React.Component {
 
   // 打开新的 webview
   openNewWindow = (url) => {
-    // 测试
+    // 测试 TODO
     //window.location.href = url
+    //console.log(url)
     if(window.kara) {
       window.kara.openURL({
         url:url,
@@ -145,11 +164,11 @@ class Container extends React.Component {
     // 去乘机人中对比
     // 更新审批人
     const { costDepartment=0, userInfo={}, approverInfo={}, selectPassengerList=[], getApprover, setApprover } = this.props
-    console.log('尝试重置审批人',this.props)
+    //console.log('尝试重置审批人',this.props)
     if(Object.keys(approverInfo).length === 0) {
       // 默认没有设置审批人 取 userInfo 的信息设置 为默认的审批人
       const {parentStaffName:name, parentStaffId:personId, costCenter:ccId, sbuId} = userInfo
-      console.log('默认审批人',{name,personId,ccId,sbuId})
+      //console.log('默认审批人',{name,personId,ccId,sbuId})
       setApprover({name,personId,ccId,sbuId}) // 默认审批人
       return
     }
@@ -158,7 +177,7 @@ class Container extends React.Component {
     if(_.findIndex(selectPassengerList,['PERSON_ID',approverInfo.personId]) !== -1) {
       //  如果审批人 在 乘机人 中
       // 先获取
-      console.log('获取新的审批人')
+      //console.log('获取新的审批人')
       getApprover(approverInfo.personId,approverInfo.sbuId,approverInfo.ccId).then(res=>{
         if(res && res.response && res.response.result === '0000') {
           const { text:name, value:personId } = res.response.data[0]
@@ -258,7 +277,7 @@ class Container extends React.Component {
             url = `${url}&${i}=${o[i]}`
           }
         }
-        //this.openNewWindow(`http://xinbuluo-public.oss-cn-beijing.aliyuncs.com/iframe/index.html?url=${Base64.encodeURI(url)}&hideNavigationBar=true`)
+        //this.openNewWindow(`http://localhost:3000/?url=${Base64.encodeURI('http://localhost:63342/test/index.html?_ijt=77f4b689oilihvn23n9r400ad5')}&hideNavigationBar=true`)
         //this.openIframe(url)
         this.openNewWindow(`${url}&hideNavigationBar=true`)
       }else{
@@ -268,11 +287,22 @@ class Container extends React.Component {
 
   }
 
+  doNotRemind = (forever) => {
+    const {doNotRemind, setRemind, userInfo} = this.props
+    if(forever) {
+      // 永久不提醒
+      doNotRemind()
+      setRemind(userInfo.personId) // 永久不提醒
+    }else{
+      doNotRemind()
+    }
+  }
+
   render() {
 
-    const { selectPassenger, selectDepartment, submit, leftClick, gotoBaoku } = this
+    const { selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, doNotRemind } = this
     const { noDeafultPassenger } = this.state
-    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger}
+    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger, doNotRemind}
     return (<Home {...props} />)
   }
 }

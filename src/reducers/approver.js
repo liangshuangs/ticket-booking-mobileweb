@@ -5,7 +5,7 @@ const approver = {
 }
 
 function setApprover(state, action) {
-  console.log('action',action)
+  //console.log('action',action)
   return {...state, info:{...action.info}}
 }
 

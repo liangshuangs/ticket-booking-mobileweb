@@ -5,6 +5,7 @@ import department from './department'
 import passenger from './passenger'
 import approver from './approver'
 import remark from './remark'
+import remind from './remind'
 
 export default combineReducers({
   user,
@@ -12,5 +13,6 @@ export default combineReducers({
   passenger,
   approver,
   remark,
+  remind,
   routing: routerReducer, // 整合路由
 })
