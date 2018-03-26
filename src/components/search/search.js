@@ -40,7 +40,7 @@ export default class Component extends React.Component {
           <i className="iconfont icon-search" />
             <span>{placeholder}</span>
         </p>
-        <input onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlue} />
+        <input type="search" onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlue} />
       </div>
     );
   }

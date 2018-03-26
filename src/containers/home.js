@@ -130,23 +130,19 @@ class Container extends React.Component {
     const sign = md5(`${timestamp}${bkcid}${emnum}${direction}${homePage}${salt}`)
     const bkurl = 'http://apics.baoku.com/open/api/login/oaLogin'
     const url = `${bkurl}?timestamp=${timestamp}&bkcid=${bkcid}&emnum=${emnum}&sign=${sign}&direction=${direction}&homePage=${homePage}`
-    this.openNewWindow(url)
+    this.openNewWindow(url,'机票预定')
   }
 
   // 打开新的 webview
-  openNewWindow = (url) => {
+  openNewWindow = (url,title) => {
     // 测试 TODO
     //window.location.href = url
     //console.log(url)
     if(window.kara) {
-      window.kara.openURL({
-        url:url,
-      })
+      window.kara.openURL(title ? {url,title}: {url})
     }else{
       document.addEventListener('JSSDKReady', function(){
-        window.kara.openURL({
-          url:url,
-        })
+        window.kara.openURL(title ? {url,title}: {url})
       }, false);
     }
   }
