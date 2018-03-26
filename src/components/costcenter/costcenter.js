@@ -23,6 +23,8 @@ export default class Component extends React.Component {
         key: `key${i}`,
         value: v.ccId,
         label: v.ccName,
+        companyName: v.companyName,
+        regionName: v.regionName,
       }))
     }
 

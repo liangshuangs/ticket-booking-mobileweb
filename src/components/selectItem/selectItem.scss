@@ -7,7 +7,6 @@
 	background-color: #fff;
 	 > li {
 	 position: relative;
-	 height: 175px;
 	 padding: 27px 130px 27px 0;
 	 list-style: none;
 	 border-bottom: 1PX solid #e0e0e0;
@@ -17,10 +16,11 @@
 	 	}
 	 	> a {
 	 		position: absolute;
-	 		top: 0;
+	 		top: 50%;
 	 		right: 0;
 	 		width: 130px;
 	 		height: 174px;
+			margin-top: -87px;
 	 		line-height: 174px;
 	 		text-align: center;
 	 		font-size: 90px;
