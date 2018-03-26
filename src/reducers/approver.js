@@ -47,7 +47,7 @@ function delApprover(state, action) {
 
   if(isIn) {
     // 重新设置历史 和 当前审批人
-    const historyInfo = state.historyInfo.slice(0,n).concat(state.historyInfo.slice(n+1))
+    const historyInfo = state.historyInfo.slice(0,n)//.concat(state.historyInfo.slice(n+1)) 跨级别 不追溯审批人
     const info = historyInfo[historyInfo.length - 1]
     console.log('state.historyInfo',state.historyInfo)
     console.log('del historyInfo',historyInfo)
