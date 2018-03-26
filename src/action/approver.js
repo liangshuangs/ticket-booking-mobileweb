@@ -15,3 +15,13 @@ export const setApprover = (info) => ({
   type: 'SET_APPROVER',
   info,
 })
+
+export const delApprover = (info) => ({
+  type: 'DEL_APPROVER',
+  info,
+})
+
+export const resetApprover = (info) => ({
+  type: 'RESET_APPROVER',
+  info,
+})

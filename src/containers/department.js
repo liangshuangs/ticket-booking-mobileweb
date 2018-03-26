@@ -5,7 +5,7 @@ import _ from 'lodash'
 import Department from '../components/department/department'
 import { changeCostDepartment, changeTabsIndex, setCostDepartmentData, getOtherDepartmentApprover } from '../action/department'
 import { getProjectInfo, getProjectApprover } from '../action/project'
-import { setApprover } from '../action/approver'
+import { setApprover, resetApprover } from '../action/approver'
 import tost from '../components/tost/tost'
 
 
@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => (
     setCostDepartmentData,
     getOtherDepartmentApprover,
     setApprover,
+    resetApprover,
   }, dispatch)
 );
 
@@ -175,7 +176,8 @@ class Container extends React.Component {
       approver = {name,personId,ccId,sbuId}
     }
     // 更新审批人的副本
-    this.props.setApprover(approver)
+    //this.props.setApprover(approver)
+    this.props.resetApprover(approver) // 重置了部门也同时重置 审批人和审批人历史，审批人历史用户删除乘机人时降级到正确到审批人
 
     this.props.changeCostDepartment(tableIndex) // 确定费用部门后 保存部门ID
 

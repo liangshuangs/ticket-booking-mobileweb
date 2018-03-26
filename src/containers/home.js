@@ -7,7 +7,7 @@ import md5 from 'md5'
 import Home from '../components/home/home'
 import { changeTabsIndex } from '../action/department'
 import { deletePassenger, getPassenger, selectPassenger, setDefaultPassenger } from '../action/passenger'
-import { getApprover, setApprover } from '../action/approver'
+import { getApprover, setApprover, delApprover } from '../action/approver'
 import { submitVoucher } from '../action/home'
 import { doNotRemind, isRemind, getRemind, setRemind } from '../action/remind'
 import tost from '../components/tost/tost'
@@ -34,6 +34,7 @@ const mapDispatchToProps = dispatch => (
     setDefaultPassenger,
     getApprover,
     setApprover,
+    delApprover,
     submitVoucher,
     doNotRemind,
     isRemind,
@@ -55,7 +56,7 @@ class Container extends React.Component {
   componentWillMount(){
     const { changeTabsIndex, costDepartment=0, defaultPassengerIsSet } = this.props
     changeTabsIndex(costDepartment) // 重置 tabsIndex
-    this.resetApprover() // 尝试 重置 审批人
+    this.resetApprover(this.props) // 尝试 重置 审批人
     //console.log('defaultPassengerIsSet',defaultPassengerIsSet)
     if(!defaultPassengerIsSet){
       // 没有设置过默认乘机人
@@ -74,8 +75,8 @@ class Container extends React.Component {
     })
   }
 
-  componentWillReceiveProps(){
-    this.resetApprover() // 尝试 重置 审批人
+  componentWillReceiveProps(nexProps){
+    this.resetApprover(nexProps) // 尝试 重置 审批人
   }
 
   // 获取默认乘机人
@@ -159,11 +160,11 @@ class Container extends React.Component {
   }
 
   // 重置审批人
-  resetApprover = () => {
+  resetApprover = (props) => {
     // 获取当前的审批人
     // 去乘机人中对比
     // 更新审批人
-    const { costDepartment=0, userInfo={}, approverInfo={}, selectPassengerList=[], getApprover, setApprover } = this.props
+    const { costDepartment=0, userInfo={}, approverInfo={}, selectPassengerList=[], getApprover, setApprover } = props
     //console.log('尝试重置审批人',this.props)
     if(Object.keys(approverInfo).length === 0) {
       // 默认没有设置审批人 取 userInfo 的信息设置 为默认的审批人
@@ -287,6 +288,7 @@ class Container extends React.Component {
 
   }
 
+  // 不要在提示 改版信息
   doNotRemind = (forever) => {
     const {doNotRemind, setRemind, userInfo} = this.props
     if(forever) {
@@ -298,11 +300,19 @@ class Container extends React.Component {
     }
   }
 
+  // 删除乘机人
+  deletePassengerCall = (info) => {
+    console.log('deletePassengerCall',info)
+    const {deletePassenger, delApprover} = this.props
+    deletePassenger(info)
+    delApprover(info) // 尝试删除审批人
+  }
+
   render() {
 
-    const { selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, doNotRemind } = this
+    const { selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, doNotRemind, deletePassengerCall } = this
     const { noDeafultPassenger } = this.state
-    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger, doNotRemind}
+    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger, doNotRemind, deletePassengerCall}
     return (<Home {...props} />)
   }
 }

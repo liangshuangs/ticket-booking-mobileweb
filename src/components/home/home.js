@@ -17,6 +17,7 @@ export default class Component extends React.Component {
   getItem = () => {
     const { selectDepartment, costDepartment, costDepartmentData, approverInfo } = this.props
     if(costDepartment === 0) {
+      console.log('approverInfo',approverInfo)
       const { costCenter, parentStaffName } = costDepartmentData[0]
       return[<Item key={0} type="check" label="费用部门：" value="本部门结算" onClick={selectDepartment} />,
       <Item key={1} type="info" label="CC(成本中心)：" value={costCenter} />,
@@ -50,7 +51,7 @@ export default class Component extends React.Component {
 
   render() {
     const {forever} = this.state
-    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassenger, submit, leftClick, gotoBaoku, noDeafultPassenger, remindIs=false } = this.props
+    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassengerCall, submit, leftClick, gotoBaoku, noDeafultPassenger, remindIs=false } = this.props
     const { accountName } = userInfo
 
     return (
@@ -60,7 +61,7 @@ export default class Component extends React.Component {
           <div className="body scroll f-bt">
             <Item type="info" label="申请人" value={accountName} />
             <Item className="noborder" type="check" label="乘机人：" value="选择乘机人" onClick={selectPassenger} />
-            <Member selectPassenger={selectPassenger} deletePassenger={deletePassenger} selectPassengerList={selectPassengerList} />
+            <Member selectPassenger={selectPassenger} deletePassenger={deletePassengerCall} selectPassengerList={selectPassengerList} />
             {this.getItem()}
           </div>
           <Footer hint onClick={()=>{submit()}} />
