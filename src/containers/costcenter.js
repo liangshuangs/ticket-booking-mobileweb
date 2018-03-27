@@ -56,9 +56,10 @@ class Container extends React.Component {
   },200)
   // 搜索值为空 执行的回掉
   getCostCenterRecentCall = () => {
+    this.keywords = undefined
     const { getCostCenterRecent, userInfo } = this.props
     getCostCenterRecent(userInfo.personId).then(res=>{
-      if(res && res.response && res.response.result === '0000') {
+      if(!this.keywords && res && res.response && res.response.result === '0000') {
         this.setState({costCenterList:res.response.data})
       }
     })

@@ -72,15 +72,15 @@ export default class Component extends React.Component {
         <Item type="info" label="其他:" value={remark.text ? `${remark.text.slice(0,10)}...` : '请输入备注'} onClick={gotoRemark} />
       </div>
     }else{
-      const {companyId,projectCode,projectId,projectName,projectType,sbuId} = projectInfoSimple
-      const {regionId, ccId} = projectInfo
+      const {projectCode,projectName,projectType,sbuId} = projectInfoSimple
+      const {companyName, regionName, ccId} = projectInfo
       const {name} = approverInfo
       return <div className="panel">
-        <Item type="check" className="topborder" label="项目编码:" value={projectId} onClick={gotoProject} />
+        <Item type="check" className="topborder" label="项目编码:" value={projectCode} onClick={gotoProject} />
         <Item type="check" label="项目名称:" value={projectName} onClick={gotoProject} />
         <Item type="info" label="任务号:" value={projectCode}  />
-        <Item type="info" label="Company(公司):" value={companyId} />
-        <Item type="info" label="Region(地区):" value={regionId} />
+        <Item type="info" label="Company(公司):" value={companyName} />
+        <Item type="info" label="Region(地区):" value={regionName} />
         <Item type="info" label="CC(成本中心):" value={ccId}  />
         <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
         <Item type="info" label="审批人" value={name} />

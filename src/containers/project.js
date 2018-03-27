@@ -55,9 +55,10 @@ class Container extends React.Component {
   },200)
 
   getProjectRecentCall = () => {
+    this.keywords = undefined
     const { getProjectRecent, userInfo } = this.props
     getProjectRecent(userInfo.personId).then(res=>{
-      if(res && res.response && res.response.result === '0000') {
+      if(!this.keywords && res && res.response && res.response.result === '0000') {
         this.setState({projectInfoList:res.response.data})
       }
     })

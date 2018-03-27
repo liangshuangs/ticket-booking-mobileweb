@@ -21,7 +21,7 @@ export default class Component extends React.Component {
     return projectInfoList.map((v,i)=>({
       ...v,
       key: `key${i}`,
-      value: v.projectId,
+      value: v.projectCode,
       label: v.projectName,
     }))
   }
