@@ -177,6 +177,11 @@ class Container extends React.Component {
       return
     }
 
+    if(tableIndex === 2 && Object.keys(data.taskInfo).length === 0 && Object.keys(data.projectInfo.taskNumberData.length > 0)) {
+      tost('请选择任务号')
+      return
+    }
+
     // 更新审批人的副本（三个项目部门的初始数据分别保存在各自的数组中，为了方便操作审批人，所以审批人单独保存一个副本）
     if(tableIndex === 0) {
       const {parentStaffName:name, parentStaffId:personId, costCenter:ccId, sbuId} = data

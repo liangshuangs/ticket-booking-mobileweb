@@ -137,7 +137,7 @@ class Container extends React.Component {
   openNewWindow = (url,title) => {
     // 测试 TODO
     //window.location.href = url
-    //console.log(url)
+    console.log(url)
     if(window.kara) {
       window.kara.openURL(title ? {url,title}: {url})
     }else{

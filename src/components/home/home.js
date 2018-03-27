@@ -67,7 +67,7 @@ export default class Component extends React.Component {
         {noDeafultPassenger ? <Modal className="msg">
           <p className="modal-msg">当前帐号尚无机票预订权限</p>
         </Modal> : null }
-        {remindIs ? <Modal>
+        {remindIs && !noDeafultPassenger ? <Modal>
           <div className="modal-panel">
             <div className="modal-body">
               <p className="modal-info">由于业务规则的调整，乘机人和审批人需要在信息单页面提前选择，提交订单页面不可修改，请知悉～</p>
