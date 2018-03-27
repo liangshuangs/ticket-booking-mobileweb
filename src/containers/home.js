@@ -217,6 +217,7 @@ class Container extends React.Component {
     b.login_number = userInfo.staffCode // 登录人工号
     b.applyer_person_id = userInfo.personId // 登录人的personid
     b.office = userInfo.phone || '' // 分机号
+    b.bg_id = userInfo.bgId
 
     if(costDepartment === 0) {
       // 本部门
@@ -239,8 +240,10 @@ class Container extends React.Component {
       b.over_supervisor_person_id = approverInfo.personId // 夸部门审批人(personid)
     }else if(costDepartment === 2) {
       // 项目
-      const i = costDepartmentData[2].projectInfo
-      const is = costDepartmentData[2].projectInfoSimple
+      const i = costDepartmentData[2].projectInfo // 项目详细信息
+      const is = costDepartmentData[2].projectInfoSimple // 项目基本信息
+      const it = costDepartmentData[2].taskInfo // 项目任务号
+      // TODO 项目任务号
       b.company_id = i.companyId
       b.company_name = i.companyName
       b.sbu_id = i.sbuId
@@ -253,8 +256,11 @@ class Container extends React.Component {
       b.project_code = is.projectCode // 项目编号
       b.isglProject = is.projectType === '-1' ? '1' : '0' // 是否是gl项目
 
-      b.task_number = i.taskNumberData[0].text.split('--')[0] // 任务号
-      b.task_id = i.taskNumberData[0].value // 任务ID
+      // 任务号是个数组 可为空 如果是多个需要选择
+      if(it.text && it.value) {
+        b.task_number = it.text.split('--')[0] // 任务号
+        b.task_id = it.value // 任务ID
+      }
 
       b.travel_purpose = remark.text // 其他
 
@@ -263,7 +269,7 @@ class Container extends React.Component {
       return
     }
 
-    //console.log(b,JSON.stringify(b))
+    // console.log(b)
 
     submitVoucher(b).then(res=>{
       if(res && res.response && res.response.result === '0000' && res.response.data) {
@@ -278,7 +284,7 @@ class Container extends React.Component {
         //this.openIframe(url)
         this.openNewWindow(`${url}&hideNavigationBar=true`)
       }else{
-        tost(res.response.message || '提交出错')
+        tost({msg:(res.response.message || '提交出错'), time: 4})
       }
     })
 

@@ -13,8 +13,9 @@ const department = {
     },
     {
       projectInfoSimple:{}, // 项目item信息
-      projectInfo:{}, // 项目详细信息
+      projectInfo:{}, // 项目详细信息 通过simple 获取详细信息 重置taskInfo
       approverInfo: {}, // 项目审批人
+      taskInfo: {}, // 获取项目详细信息会有任务号数组 任务号需要单独选择一次
     }
   ] // 费用部门数据
 }

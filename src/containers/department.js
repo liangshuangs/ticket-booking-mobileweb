@@ -34,11 +34,12 @@ class Container extends React.Component {
     super(props)
     this.state = {
       approverModalShow: false,
+      taskModalShow: false,
     }
   }
 
   componentWillMount(){
-    this.getProjectInfoWillMount()
+    this.getProjectInfoWillMount() // try
     this.getOtherDepartmentApproverWillMount()
   }
 
@@ -52,11 +53,17 @@ class Container extends React.Component {
       const {projectId,projectCode,projectType} = projectInfoSimple
       const { personId:applyerId } = userInfo
       const costDepartmentData2 = _.cloneDeep(costDepartmentData[2])
-      let infoIsFull = 0
+      let infoIsFull = 0 // 两个接口同时请求 然后把数据压入对象 当请求两次后 在保存数据到store
       // 先获取项目的详细信息
       getProjectInfo(projectCode,projectType,applyerId).then(res=>{
         if(res && res.response && res.response.result === '0000') {
           costDepartmentData2.projectInfo = res.response.data[0]
+          // 重新设置了项目信息 那么任务号需要重置
+          if(costDepartmentData2.projectInfo.taskNumberData.length === 1) {
+            costDepartmentData2.taskInfo = costDepartmentData2.projectInfo.taskNumberData[0]
+          }else{
+            costDepartmentData2.taskInfo = {}
+          }
           if(++infoIsFull === 2) {
             // 保存 项目信息到 store
             setCostDepartmentData(2,costDepartmentData2)
@@ -114,6 +121,15 @@ class Container extends React.Component {
     const data = _.cloneDeep(costDepartmentData[1])
     data.approver = approver
     setCostDepartmentData(1,data)
+  }
+
+  // 选择 设置 项目 任务号
+  selectProjectTask = (taskInfo) => {
+    const { department, setCostDepartmentData } = this.props
+    const { costDepartmentData } = department
+    const data = _.cloneDeep(costDepartmentData[2])
+    data.taskInfo = taskInfo
+    setCostDepartmentData(2,data)
   }
 
 
@@ -184,16 +200,24 @@ class Container extends React.Component {
     this.props.history.push('/')
   }
 
+  // 选择审批人的 modal
   toggleApproverModal = () => {
     this.setState((old)=>(
       {...old, approverModalShow: !old.approverModalShow}
     ))
   }
 
+  // 选择任务号的modal
+  toggleTaskModal = () => {
+    this.setState((old)=>(
+      {...old, taskModalShow: !old.taskModalShow}
+    ))
+  }
+
   render() {
-    const { gotoHome, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, selectOtherDepartmentApprover } = this
-    const { approverModalShow } = this.state
-    const props = {...this.props, gotoHome, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow, selectOtherDepartmentApprover}
+    const { gotoHome, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, toggleTaskModal, selectOtherDepartmentApprover, selectProjectTask } = this
+    const { approverModalShow, taskModalShow } = this.state
+    const props = {...this.props, gotoHome, updateCostDepartment, gotoCostcenter, gotoProject, gotoRemark, toggleApproverModal, approverModalShow, taskModalShow, toggleTaskModal, selectOtherDepartmentApprover, selectProjectTask}
 
     return (<Department {...props} />)
   }

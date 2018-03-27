@@ -29,8 +29,6 @@ export default class Component extends React.Component {
         <Item key={2} type="info" label="审批人：" value={approverInfo.name ? approverInfo.name : approver.text} />]
     }else{
       const {projectInfoSimple, approverInfo: approverInfoThis} = costDepartmentData[2]
-
-      console.log('projectInfoSimple',projectInfoSimple)
       return[<Item key={0} type="check" label="费用部门：" value="项目结算" onClick={selectDepartment} />,
       <Item key={1} type="info" label="项目编码：" value={projectInfoSimple.projectCode} />,
       <Item key={2} type="info" label="项目名称：" value={projectInfoSimple.projectName} />,
