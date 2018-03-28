@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import Passenger from '../components/passenger/passenger'
+import tost from '../components/tost/tost'
 import { getPassenger, getRecentPassenger, setRecentPassenger, selectPassenger, deletePassenger, getPassengerAvatar } from '../action/passenger'
 
 
@@ -115,10 +116,17 @@ class Container extends React.Component {
   // 选择乘机人 缓存
   selectPassengerCache = (item) => {
     const {selectPassengerListCache} = this.state
+    const {selectPassengerList} = this.props
+
     // 去重复
     if(_.findIndex(selectPassengerListCache, ['EMPLOYEE_NUMBER', item.EMPLOYEE_NUMBER]) === -1) {
       delete item.isChecked
-      this.setState({selectPassengerListCache: selectPassengerListCache.concat(item)})
+      const list = selectPassengerListCache.concat(item)
+      if(selectPassengerList.length + list.length > 9) {
+        tost('最多可选择9名乘机人')
+        return
+      }
+      this.setState({selectPassengerListCache: list})
     }
   }
 

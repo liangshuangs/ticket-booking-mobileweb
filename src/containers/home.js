@@ -63,6 +63,7 @@ class Container extends React.Component {
       // 使用当前用户nt搜索乘机人 如果有设计为默认乘机人 如果没有 提示 “当前帐号尚无机票预订权限”
       this.getDefaultPassenger()
     }
+    this.haoMuchPassenger(this.props)
   }
 
   componentDidMount() {
@@ -77,6 +78,14 @@ class Container extends React.Component {
 
   componentWillReceiveProps(nexProps){
     this.resetApprover(nexProps) // 尝试 重置 审批人
+    //this.haoMuchPassenger(nexProps)
+  }
+
+  // 乘机人不能超过9个
+  haoMuchPassenger = (props) => {
+    if(props.selectPassengerList.length > 9) {
+      tost({msg:'最多可选择9名乘机人',time:4})
+    }
   }
 
   // 获取默认乘机人
@@ -195,6 +204,11 @@ class Container extends React.Component {
       return
     }
 
+    if(selectPassengerList.length > 9) {
+      tost('最多可选择9名乘机人')
+      return
+    }
+
     const b = {}
 
     const p = selectPassengerList.map(v=>({
@@ -283,8 +297,10 @@ class Container extends React.Component {
         //this.openNewWindow(`http://localhost:3000/?url=${Base64.encodeURI('http://localhost:63342/test/index.html?_ijt=77f4b689oilihvn23n9r400ad5')}&hideNavigationBar=true`)
         //this.openIframe(url)
         this.openNewWindow(`${url}&hideNavigationBar=true`)
+      }else if(res && res.response && res.response.message){
+        tost({msg:res.response.message, time: 4})
       }else{
-        tost({msg:(res.response.message || '提交出错'), time: 4})
+        tost({msg:'服务器开小差了', time: 4})
       }
     })
 

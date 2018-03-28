@@ -21,3 +21,16 @@ export const submitVoucher = (body) => {
     },
   }
 }
+
+// 重新获取bgId
+export const resetBgId = (companyId) => {
+  return {
+    [httpApi]: {
+      url: `/aitos/pagego?function=GetEmployeeBGId&companyId=${companyId}`,
+      options: {
+        method: 'POST',
+      },
+      types: ['RESTE_BGID'],
+    },
+  }
+}
