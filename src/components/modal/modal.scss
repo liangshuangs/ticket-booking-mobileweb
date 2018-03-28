@@ -76,22 +76,16 @@
 }
 
 .modal.msg {
-	top: 49PX;
-	.content {
-		height: calc(100% - 49PX);
-	}
+  top: 49PX;
+  height: calc(100% - 49PX);
 }
 
 .ios .modal.msg {
-	top: 67PX;
-	.content {
-		height: calc(100% - 67PX);
-	}
+  top: 67PX;
+  height: calc(100% - 67PX);
 }
 
 .iosx .modal.msg {
-	top: 89PX;
-	.content {
-		height: calc(100% - 89PX);
-	}
+  top: 89PX;
+  height: calc(100% - 89PX);
 }
