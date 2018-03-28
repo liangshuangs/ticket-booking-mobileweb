@@ -84,7 +84,7 @@ export default class Component extends React.Component {
         <Item type="info" label="Region(地区):" value={regionName} />
         <Item type="info" label="CC(成本中心):" value={ccId}  />
         <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
-        <Item type="info" label="审批人" value={name} />
+        <Item type="info" label="项目经理" value={name} />
         <Item type="info" label="其他:" value={remark.text ? `${remark.text.slice(0,10)}...` : '请输入备注'} onClick={gotoRemark} />
       </div>
     }
