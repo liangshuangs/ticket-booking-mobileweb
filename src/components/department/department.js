@@ -36,7 +36,6 @@ export default class Component extends React.Component {
       <Item type="info" label="Region(地区):" value={regionName} />
       <Item type="info" label="CC(成本中心):" value={costCenter} />
       <Item type="info" label="P/L Code(利润中心):" value={sbuId} />
-      <Item type="info" label="审批人" value={parentStaffName} />
     </div>
   }
 
