@@ -17,7 +17,6 @@ export default class Component extends React.Component {
   getItem = () => {
     const { selectDepartment, costDepartment, costDepartmentData, approverInfo } = this.props
     if(costDepartment === 0) {
-      console.log('approverInfo',approverInfo)
       const { costCenter, parentStaffName } = costDepartmentData[0]
       return[<Item key={0} type="check" label="费用部门：" value="本部门结算" onClick={selectDepartment} />,
       <Item key={1} type="info" label="CC(成本中心)：" value={costCenter} />,

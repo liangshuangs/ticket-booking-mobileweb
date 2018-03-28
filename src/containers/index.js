@@ -39,10 +39,9 @@ class Container extends React.Component {
   componentWillMount(){
     // 获取用户信息
     this.props.getUserInfo().then(res=>{
-      console.log(res)
       if(res && res.response && res.response.resultCode === '000000' && res.response.staffInfo && res.response.staffInfo.companyId ) {
         // 重新设置bgId 用户信息提高的接口 和 机票预定提高的接口 数据不吻合  需要 两个接口数据的综合
-        // this.props.resetBgId(res.response.staffInfo.companyId)
+        this.props.resetBgId(res.response.staffInfo.companyId)
       }else{
         Tost({msg: '获取用户信息出差', time: 10})
       }
@@ -54,7 +53,7 @@ class Container extends React.Component {
     const { userInfo } = this.props
     // 如果 没有数据 或者 数据没有综合
     // || !userInfo.bgIdIsReset
-    if(Object.keys(userInfo).length === 0 ) {
+    if(Object.keys(userInfo).length === 0 || !userInfo.bgIdIsReset) {
       return null;
     }
 

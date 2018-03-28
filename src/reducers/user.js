@@ -9,7 +9,7 @@ function getUserInfo(state, action) {
 }
 
 function resetBgId(state, action) {
-  const bgId = 1
+  const bgId = action.response.data[0].value
   return {...state, info:{...state.info, bgId, bgIdIsReset: true}}
 }
 
