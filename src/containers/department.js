@@ -177,7 +177,7 @@ class Container extends React.Component {
       return
     }
 
-    if(tableIndex === 2 && Object.keys(data.taskInfo).length === 0 && Object.keys(data.projectInfo.taskNumberData.length > 0)) {
+    if(tableIndex === 2 && Object.keys(data.taskInfo).length === 0 && data.projectInfo.taskNumberData.length > 0) {
       tost('请选择任务号')
       return
     }
