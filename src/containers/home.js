@@ -214,8 +214,8 @@ class Container extends React.Component {
     const p = selectPassengerList.map(v=>({
       passangers_id: v.PERSON_ID, // 乘机人ID
       passangers_name: v.LAST_NAME, // 乘机人姓名
-      passangers_number: v.EMPLOYEE_NUMBER, // 乘机人员工编号
-      passangers_tel: v.MOBILE, // 乘机人联系方式
+      //passangers_number: v.EMPLOYEE_NUMBER, // 乘机人员工编号
+      //passangers_tel: v.MOBILE, // 乘机人联系方式
     }))
 
     b.isproject = costDepartment === 2 ? '1' : '0' // 是否涉及项目

@@ -43,7 +43,7 @@ class Container extends React.Component {
         // 重新设置bgId 用户信息提高的接口 和 机票预定提高的接口 数据不吻合  需要 两个接口数据的综合
         this.props.resetBgId(res.response.staffInfo.companyId)
       }else{
-        Tost({msg: '获取用户信息出差', time: 10})
+        Tost({msg: '获取用户信息出错', time: 10})
       }
     })
   }
