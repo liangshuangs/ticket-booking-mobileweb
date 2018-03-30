@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import md5 from 'md5'
 import Admin from '../components/admin/admin'
+import ENV from "../config/env";
 
 
 const mapStateToProps = state => ({
@@ -53,7 +54,7 @@ class Container extends React.Component {
     //Common.Framework.Configuration.BaoKuSubmitURL + "?timestamp=" + timestamp + "&bkcid=" + Common.Framework.Configuration.GetDataBackCompanyID + "&comLocalCode=" + this.LoginUser.Tenant
     //+ "&emnum=" + this.LoginUser.UserID + "&sign=" + sign + "&direction=WEB&homePage=apporder";
     const {bgId, personId} = this.props.userInfo
-    const bkurl = 'http://apics.baoku.com/open/api/login/oaLogin',
+    const bkurl = ENV.BAOKU,
       timestamp = this.getYMDHMS(new Date()),
       bkcid = '049',
       comLocalCode = bgId, // 员工BGID

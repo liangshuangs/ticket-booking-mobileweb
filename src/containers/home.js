@@ -11,6 +11,7 @@ import { getApprover, setApprover, delApprover } from '../action/approver'
 import { submitVoucher } from '../action/home'
 import { doNotRemind, isRemind, getRemind, setRemind } from '../action/remind'
 import tost from '../components/tost/tost'
+import ENV from '../config/env'
 
 
 const mapStateToProps = state => ({
@@ -137,7 +138,7 @@ class Container extends React.Component {
     const homePage='airorder'
     const salt = '946fd49ecf29691e97446af73e0ae98a'
     const sign = md5(`${timestamp}${bkcid}${emnum}${direction}${homePage}${salt}`)
-    const bkurl = 'http://apics.baoku.com/open/api/login/oaLogin'
+    const bkurl = ENV.BAOKU
     const url = `${bkurl}?timestamp=${timestamp}&bkcid=${bkcid}&emnum=${emnum}&sign=${sign}&direction=${direction}&homePage=${homePage}`
     this.openNewWindow(url,'机票预定')
   }
