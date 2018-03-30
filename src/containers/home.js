@@ -130,16 +130,17 @@ class Container extends React.Component {
   // 跳转到宝库 查看 订单列表
   gotoBaoku = () => {
     // TODO
-    const {personId} = this.props.userInfo
+    const {personId, bgId} = this.props.userInfo
     const timestamp = this.getYMDHMS(new Date())
     const bkcid = '049'
     const emnum = personId
+    const comLocalCode = bgId // 员工BGID
     const direction = 'H5'
     const homePage='airorder'
     const salt = '946fd49ecf29691e97446af73e0ae98a'
     const sign = md5(`${timestamp}${bkcid}${emnum}${direction}${homePage}${salt}`)
     const bkurl = ENV.BAOKU
-    const url = `${bkurl}?timestamp=${timestamp}&bkcid=${bkcid}&emnum=${emnum}&sign=${sign}&direction=${direction}&homePage=${homePage}`
+    const url = `${bkurl}?timestamp=${timestamp}&bkcid=${bkcid}&comLocalCode=${comLocalCode}&emnum=${emnum}&sign=${sign}&direction=${direction}&homePage=${homePage}`
     this.openNewWindow(url,'机票预定')
   }
 
