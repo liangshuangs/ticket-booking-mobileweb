@@ -131,7 +131,7 @@ class Container extends React.Component {
     // TODO
     const {personId} = this.props.userInfo
     const timestamp = this.getYMDHMS(new Date())
-    const bkcid = '49003'
+    const bkcid = '049'
     const emnum = personId
     const direction = 'H5'
     const homePage='airorder'

@@ -13,6 +13,7 @@ import Project from './project'
 import Remark from './remark'
 import env from '../config/env'
 import Tost from '../components/tost/tost'
+import Admin from '../containers/admin'
 import { getUserInfo, resetBgId } from '../action/home'
 
 
@@ -66,6 +67,7 @@ class Container extends React.Component {
           <Route path="/costcenter" component={Costcenter} />
           <Route path="/project" component={Project} />
           <Route path="/remark" component={Remark} />
+          <Route path="/admin" component={Admin} />
         </Switch>
       </Router>)
   }
