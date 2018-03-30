@@ -28,7 +28,7 @@ class Container extends React.Component {
   }
 
   componentDidMount(){
-    console.log('componentDidMount')
+    alert('componentDidMount')
     this.openUrl(this.getUrl())
   }
 
