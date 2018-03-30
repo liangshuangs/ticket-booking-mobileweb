@@ -70,7 +70,11 @@ class Container extends React.Component {
   }
 
   openUrl = (url) => {
-    window.location.href = url
+    //window.location.href = url
+    alert(url)
+    setTimeout(()=>{
+      window.location.href = url
+    },10000)
   }
 
   render() {
