@@ -51,16 +51,12 @@ class Container extends React.Component {
 
   render() {
 
-    alert(window.location.href)
-
     const { userInfo } = this.props
     // 如果 没有数据 或者 数据没有综合
     // || !userInfo.bgIdIsReset
     if(Object.keys(userInfo).length === 0 || !userInfo.bgIdIsReset) {
       return null;
     }
-
-    alert('has user')
 
     return (
       <Router basename={env.ROOT_PATH}>
@@ -71,7 +67,7 @@ class Container extends React.Component {
           <Route path="/costcenter" component={Costcenter} />
           <Route path="/project" component={Project} />
           <Route path="/remark" component={Remark} />
-          <Route path="/admin" component={Admin} />
+          <Route path="/admin" component={Admin}/>
         </Switch>
       </Router>)
   }

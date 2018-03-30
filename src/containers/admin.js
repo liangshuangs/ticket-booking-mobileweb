@@ -28,12 +28,10 @@ class Container extends React.Component {
   }
 
   componentDidMount(){
-    alert('componentDidMount')
     this.openUrl(this.getUrl())
   }
 
   componentDidUpdate(){
-    console.log('componentDidUpdate')
     this.openUrl(this.getUrl())
   }
 
@@ -70,11 +68,7 @@ class Container extends React.Component {
   }
 
   openUrl = (url) => {
-    //window.location.href = url
-    alert(url)
-    setTimeout(()=>{
-      window.location.href = url
-    },10000)
+    window.location.href = url
   }
 
   render() {
