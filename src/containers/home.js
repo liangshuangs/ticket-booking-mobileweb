@@ -51,6 +51,7 @@ class Container extends React.Component {
     this.state = {
       noDeafultPassenger: false,
       isRemind: false,
+      submitModalShow: false,
     }
   }
 
@@ -80,6 +81,12 @@ class Container extends React.Component {
   componentWillReceiveProps(nexProps){
     this.resetApprover(nexProps) // 尝试 重置 审批人
     //this.haoMuchPassenger(nexProps)
+  }
+
+  submitModalToggle = (cb) => {
+    this.setState(old=>({
+      submitModalShow: !old.submitModalShow
+    }),cb)
   }
 
   // 乘机人不能超过9个
@@ -287,23 +294,28 @@ class Container extends React.Component {
 
     // console.log(b)
 
+    this.submitModalToggle(); // 显示跳转中
+
     submitVoucher(b).then(res=>{
-      if(res && res.response && res.response.result === '0000' && res.response.data) {
-        const o = res.response.data[0]
-        let url = `${o.bkurl}/?`
-        for(let i in o) {
-          if(i !== 'bkurl' && i !== 'parameters') {
-            url = `${url}&${i}=${o[i]}`
+      // 提交回应后 先关闭跳转中 然后执行业务逻辑
+      this.submitModalToggle(()=>{
+        if(res && res.response && res.response.result === '0000' && res.response.data) {
+          const o = res.response.data[0]
+          let url = `${o.bkurl}/?`
+          for(let i in o) {
+            if(i !== 'bkurl' && i !== 'parameters') {
+              url = `${url}&${i}=${o[i]}`
+            }
           }
+          //this.openNewWindow(`http://localhost:3000/?url=${Base64.encodeURI('http://localhost:63342/test/index.html?_ijt=77f4b689oilihvn23n9r400ad5')}&hideNavigationBar=true`)
+          //this.openIframe(url)
+          this.openNewWindow(`${url}&hideNavigationBar=true`)
+        }else if(res && res.response && res.response.message){
+          tost({msg:res.response.message, time: 4})
+        }else{
+          tost({msg:'服务器开小差了', time: 4})
         }
-        //this.openNewWindow(`http://localhost:3000/?url=${Base64.encodeURI('http://localhost:63342/test/index.html?_ijt=77f4b689oilihvn23n9r400ad5')}&hideNavigationBar=true`)
-        //this.openIframe(url)
-        this.openNewWindow(`${url}&hideNavigationBar=true`)
-      }else if(res && res.response && res.response.message){
-        tost({msg:res.response.message, time: 4})
-      }else{
-        tost({msg:'服务器开小差了', time: 4})
-      }
+      });
     })
 
   }
@@ -331,8 +343,8 @@ class Container extends React.Component {
   render() {
 
     const { selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, doNotRemind, deletePassengerCall } = this
-    const { noDeafultPassenger } = this.state
-    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger, doNotRemind, deletePassengerCall}
+    const { noDeafultPassenger, submitModalShow } = this.state
+    const props = {...this.props, selectPassenger, selectDepartment, submit, leftClick, gotoBaoku, noDeafultPassenger, doNotRemind, deletePassengerCall, submitModalShow}
     return (<Home {...props} />)
   }
 }

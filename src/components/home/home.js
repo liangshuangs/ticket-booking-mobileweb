@@ -48,7 +48,7 @@ export default class Component extends React.Component {
 
   render() {
     const {forever} = this.state
-    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassengerCall, submit, leftClick, gotoBaoku, noDeafultPassenger, remindIs=false } = this.props
+    const { selectPassenger, userInfo={}, selectPassengerList=[], deletePassengerCall, submit, leftClick, gotoBaoku, noDeafultPassenger, remindIs=false, submitModalShow } = this.props
     const { accountName } = userInfo
 
     return (
@@ -66,6 +66,9 @@ export default class Component extends React.Component {
         {noDeafultPassenger ? <Modal className="msg">
           <p className="modal-msg">当前帐号尚无机票预订权限</p>
         </Modal> : null }
+        {submitModalShow ? <Modal className="msg">
+          <p className="modal-msg">跳转中...</p>
+        </Modal> : null}
         {remindIs && !noDeafultPassenger ? <Modal>
           <div className="modal-panel">
             <div className="modal-body">
